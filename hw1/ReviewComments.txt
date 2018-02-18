@@ -1,0 +1,3 @@
+Server: cdp.database.windows.net
+Login: member
+Password: epamCDP2018
