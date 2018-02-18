@@ -14,6 +14,10 @@ IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'Route' )
 	DROP TABLE dbo.[Route]
 GO
 
+IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'Driver_Truck' )
+	DROP TABLE dbo.Driver_Truck
+GO
+
 IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'Driver' )
 	DROP TABLE dbo.Driver
 GO
@@ -41,7 +45,9 @@ ALTER TABLE dbo.ContactInformation
 	ADD CONSTRAINT pk_ContactInformation PRIMARY KEY CLUSTERED(Id ASC);
 
 CREATE TABLE dbo.Warehouse (
-	Id INT IDENTITY(1, 1) NOT NULL
+	Id INT IDENTITY(1, 1) NOT NULL,
+	City NVARCHAR(50) NOT NULL,
+	[State] NVARCHAR(50) NOT NULL,
 );
 
 ALTER TABLE dbo.Warehouse   
@@ -49,11 +55,12 @@ ALTER TABLE dbo.Warehouse
 
 CREATE TABLE dbo.Truck (
 	Id INT IDENTITY(1, 1) NOT NULL,
-	BrandName NVARCHAR (100) NOT NULL,
+	BrandName NVARCHAR(100) NOT NULL,
 	RegistrationNumber NVARCHAR(100) NOT NULL,
+	[Year] NVARCHAR(50) NOT NULL,
 	Payload DECIMAL NOT NULL,
-	Volume DECIMAL NOT NULL,
 	FuelConsumption DECIMAL NOT NULL,
+	Volume DECIMAL NOT NULL,
 );
 
 ALTER TABLE dbo.Truck   
@@ -61,12 +68,25 @@ ALTER TABLE dbo.Truck
 
 CREATE TABLE dbo.Driver (
 	Id INT IDENTITY(1, 1) NOT NULL,
-	TruckId INT NOT NULL
+	FirstName NVARCHAR(100) NOT NULL,
+	LastName NVARCHAR(100) NOT NULL,
+	Birthdate NVARCHAR(100) NOT NULL
 );
 
 ALTER TABLE dbo.Driver   
-	ADD CONSTRAINT pk_Driver PRIMARY KEY CLUSTERED(Id ASC),
-		CONSTRAINT fk_Driver_Truck FOREIGN KEY (TruckId) REFERENCES dbo.Truck (Id);
+	ADD CONSTRAINT pk_Driver PRIMARY KEY CLUSTERED(Id ASC);
+
+CREATE TABLE dbo.Driver_Truck
+(
+	TruckId INT NOT NULL,
+	DriverId INT NOT NULL
+);
+
+ALTER TABLE dbo.Driver_Truck
+	ADD CONSTRAINT pk_Driver_Truck PRIMARY KEY (DriverId, TruckId),
+		CONSTRAINT fk_Driver_Truck_Driver FOREIGN KEY (DriverId) REFERENCES Driver (Id),
+		CONSTRAINT fk_Driver_Truck_Truck FOREIGN KEY (TruckId) REFERENCES Truck (Id)
+
 
 CREATE TABLE dbo.[Route] (
 	Id INT IDENTITY(1, 1) NOT NULL,
