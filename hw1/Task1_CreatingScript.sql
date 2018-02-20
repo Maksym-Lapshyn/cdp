@@ -71,30 +71,32 @@ ALTER TABLE dbo.[Route]
 		CONSTRAINT fk_Route_Origin FOREIGN KEY (OriginId) REFERENCES dbo.Warehouse (Id),
 		CONSTRAINT fk_Route_Destination FOREIGN KEY (DestinationId) REFERENCES dbo.Warehouse (Id);
 
-CREATE TABLE dbo.Cargo (
-	Id INT IDENTITY(1, 1) NOT NULL,
-	[Weight] INT NOT NULL,
-	Volume INT NOT NULL,
-	SenderId INT NOT NULL,
-	RecipientId INT NOT NULL
-);
-
-ALTER TABLE dbo.Cargo   
-	ADD CONSTRAINT pk_Cargo PRIMARY KEY CLUSTERED(Id ASC),
-		CONSTRAINT fk_Cargo_Sender FOREIGN KEY (SenderId) REFERENCES dbo.ContactInformation (Id),
-		CONSTRAINT fk_Cargo_Recipient FOREIGN KEY (RecipientId) REFERENCES dbo.ContactInformation (Id);
-
 CREATE TABLE dbo.Shipment (
 	Id INT IDENTITY(1, 1) NOT NULL,
 	RouteId INT NOT NULL,
 	DriverId INT NOT NULL,
 	TruckId INT NOT NULL,
-	CargoId INT NOT NULL
+	DepartureDate DATETIME NOT NULL,
+	DeliveryDate DATETIME NOT NULL
 );
 
 ALTER TABLE dbo.Shipment   
 	ADD CONSTRAINT pk_Shipment PRIMARY KEY CLUSTERED(Id ASC),
 		CONSTRAINT fk_Shipment_Route FOREIGN KEY (RouteId) REFERENCES dbo.[Route] (Id),
 		CONSTRAINT fk_Shipment_Driver FOREIGN KEY (DriverId) REFERENCES dbo.Driver (Id),
-		CONSTRAINT fk_Shipment_Truck FOREIGN KEY (TruckId) REFERENCES dbo.Truck (Id),
-		CONSTRAINT fk_Shipment_Cargo FOREIGN KEY (CargoId) REFERENCES dbo.Cargo (Id);
+		CONSTRAINT fk_Shipment_Truck FOREIGN KEY (TruckId) REFERENCES dbo.Truck (Id);
+
+CREATE TABLE dbo.Cargo (
+	Id INT IDENTITY(1, 1) NOT NULL,
+	[Weight] INT NOT NULL,
+	Volume INT NOT NULL,
+	SenderId INT NOT NULL,
+	RecipientId INT NOT NULL,
+	ShipmentId INT NULL
+);
+
+ALTER TABLE dbo.Cargo   
+	ADD CONSTRAINT pk_Cargo PRIMARY KEY CLUSTERED(Id ASC),
+		CONSTRAINT fk_Cargo_Sender FOREIGN KEY (SenderId) REFERENCES dbo.ContactInformation (Id),
+		CONSTRAINT fk_Cargo_Recipient FOREIGN KEY (RecipientId) REFERENCES dbo.ContactInformation (Id),
+		CONSTRAINT fk_Cargo_Shipment FOREIGN KEY (ShipmentId) REFERENCES dbo.Shipment (Id) ON DELETE SET NULL;
