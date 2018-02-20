@@ -1,30 +1,10 @@
-BEGIN TRANSACTION;
+USE master;
 
+DROP DATABASE IF EXISTS [Shipment_ML];
+
+CREATE DATABASE Shipment_ML;
+GO
 USE Shipment_ML;
-
-IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'Shipment' )
-	DROP TABLE dbo.Shipment;
-
-IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'Cargo' )
-	DROP TABLE dbo.Cargo;
-
-IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'Route' )
-	DROP TABLE dbo.[Route];
-
-IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'DriverTruck' )
-	DROP TABLE dbo.DriverTruck;
-
-IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'Driver' )
-	DROP TABLE dbo.Driver;
-
-IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'Truck' )
-	DROP TABLE dbo.Truck;
-
-IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'Warehouse' )
-	DROP TABLE dbo.Warehouse;
-
-IF EXISTS ( SELECT [Name] FROM sys.tables WHERE [Name] = 'ContactInformation' )
-	DROP TABLE dbo.ContactInformation;
 
 CREATE TABLE dbo.ContactInformation (
 	Id INT IDENTITY(1, 1) NOT NULL,
@@ -39,7 +19,7 @@ ALTER TABLE dbo.ContactInformation
 CREATE TABLE dbo.Warehouse (
 	Id INT IDENTITY(1, 1) NOT NULL,
 	City NVARCHAR(50) NOT NULL,
-	[State] NVARCHAR(50) NOT NULL,
+	[State] NVARCHAR(50) NOT NULL
 );
 
 ALTER TABLE dbo.Warehouse   
@@ -118,5 +98,3 @@ ALTER TABLE dbo.Shipment
 		CONSTRAINT fk_Shipment_Driver FOREIGN KEY (DriverId) REFERENCES dbo.Driver (Id),
 		CONSTRAINT fk_Shipment_Truck FOREIGN KEY (TruckId) REFERENCES dbo.Truck (Id),
 		CONSTRAINT fk_Shipment_Cargo FOREIGN KEY (CargoId) REFERENCES dbo.Cargo (Id);
-
-COMMIT TRANSACTION;
