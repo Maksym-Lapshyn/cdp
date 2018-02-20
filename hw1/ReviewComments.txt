@@ -1,3 +1,13 @@
 Server: cdp.database.windows.net
 Login: member
 Password: epamCDP2018
+
+20.02.18
+0) Remove emprty image from repository New Bitmap Image.bmp
+1) Task1_CreatingScript.sql Create database sql comand missed;
+2) Task1_CreatingScript.sql DriverTruck table, add DriverTruck, REFERENCES - scheme name dbo - missed;
+3) Task2_PopulateRoutes.sql Don't use implicit join syntax with comas, it's hard to read use JOIN ON synctax, read perferct chapter about joins from Ицик Бен-Ган book https://www.ozon.ru/context/detail/id/4499294/
+4) Task2_PopulateRoutes.sql Use variables, for me 3000 it's unclear - is it a dream salary?:) why don't use FLOOR(RAND()*(@MaxDistance-@MinDistance)+@MinDistance); instead of FLOOR(RAND(CHECKSUM(NEWID()))*(3000 - 100 +1) + 100) https://www.techonthenet.com/sql_server/functions/rand.php?
+5) Task2_PopulateCargoAndShipment.sql Don't you think FLOOR is better than ROUND(value, 0)
+
+P.S. db schema is ok for me, good job
