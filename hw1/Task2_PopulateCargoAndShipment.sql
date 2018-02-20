@@ -53,6 +53,28 @@ BEGIN
 	DECLARE @truckId INT = ROUND(((@truckCount - 1) * RAND() + 1), 0);
 	DECLARE @driverId INT;
 
+	DECLARE @departureDateFrom AS DATETIME = '1990-01-01';
+	DECLARE @departureDateTo AS DATETIME = '2004-01-01';
+	DECLARE @days_diff AS INT = cast(@departureDateTo - @departureDateFrom AS INT);
+	DECLARE @departureDate DATETIME;
+
+	SELECT @departureDate = @departureDateFrom +
+		DATEADD(second, ABS(CHECKSUM(newid()) % 60), 0) +
+		DATEADD(minute, ABS(CHECKSUM(newid()) % 60), 0) +
+		DATEADD(hour, ABS(CHECKSUM(newid()) % 24), 0) +
+		DATEADD(day, ABS(CHECKSUM(newid()) % @days_diff), 0);
+
+	DECLARE @deliveryDateFrom AS DATETIME = '2004-01-01';
+	DECLARE @deliveryDateTo AS DATETIME = '2018-01-01';
+	SET @days_diff = cast(@deliveryDateTo - @deliveryDateFrom AS INT);
+	DECLARE @deliveryDate DATETIME;
+
+	SELECT @deliveryDate = @deliveryDateFrom +
+		DATEADD(second, ABS(CHECKSUM(newid()) % 60), 0) +
+		DATEADD(minute, ABS(CHECKSUM(newid()) % 60), 0) +
+		DATEADD(hour, ABS(CHECKSUM(newid()) % 24), 0) +
+		DATEADD(day, ABS(CHECKSUM(newid()) % @days_diff), 0);
+
 	SELECT TOP 1 @driverId = DriverId
 	FROM dbo.DriverTruck
 	WHERE TruckId = @truckId
@@ -62,14 +84,27 @@ BEGIN
 		[RouteId],
 		[DriverId],
 		[TruckId],
-		[CargoId]
+		[DepartureDate],
+		[DeliveryDate]
 	)
 	VALUES(
 		ROUND(((@routeCount - 1) * RAND() + 1), 0),
 		@driverId,
 		@truckId,
-		ROUND(((@cargosToInsert - 1) * RAND() + 1), 0)
+		@departureDate,
+		@deliveryDate
 	)
+
+	SET @currentRow = @currentRow + 1;
+END
+
+SET @currentRow = 1;
+
+WHILE @currentRow <= @cargosToInsert
+BEGIN
+	UPDATE dbo.Cargo
+	SET ShipmentId = ROUND(((@shipmentsToInsert - 1) * RAND() + 1), 0)
+	WHERE Id = @currentRow
 
 	SET @currentRow = @currentRow + 1;
 END
