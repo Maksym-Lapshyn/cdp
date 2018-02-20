@@ -42,7 +42,7 @@ CREATE TABLE dbo.Driver (
 	Id INT IDENTITY(1, 1) NOT NULL,
 	FirstName NVARCHAR(100) NOT NULL,
 	LastName NVARCHAR(100) NOT NULL,
-	Birthdate DATE NOT NULL
+	Birthdate NVARCHAR(100) NOT NULL
 );
 
 ALTER TABLE dbo.Driver   

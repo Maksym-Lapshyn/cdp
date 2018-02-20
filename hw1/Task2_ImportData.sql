@@ -3,7 +3,7 @@ BEGIN TRANSACTION;
 USE Shipment_ML;
 
 BULK INSERT dbo.Truck
-FROM 'D:\Projects\CDP\hw1\ImportData\Trucks.csv' 
+FROM 'E:\Projects\CDP\hw1\ImportData\Trucks.csv' 
 WITH(
 	FIELDTERMINATOR = ',',
 	ROWTERMINATOR = '\n',
@@ -11,7 +11,7 @@ WITH(
 );
 
 BULK INSERT dbo.Driver
-FROM 'D:\Projects\CDP\hw1\ImportData\Drivers.csv' 
+FROM 'E:\Projects\CDP\hw1\ImportData\Drivers.csv' 
 WITH(
 	FIELDTERMINATOR = ',',
 	ROWTERMINATOR = '\n',
@@ -19,7 +19,7 @@ WITH(
 );
 
 BULK INSERT dbo.Warehouse
-FROM 'D:\Projects\CDP\hw1\ImportData\Warehouses.csv' 
+FROM 'E:\Projects\CDP\hw1\ImportData\Warehouses.csv' 
 WITH(
 	FIELDTERMINATOR = ',',
 	ROWTERMINATOR = '\n',
@@ -27,7 +27,7 @@ WITH(
 );
 
 BULK INSERT dbo.DriverTruck
-FROM 'D:\Projects\CDP\hw1\ImportData\Drivers-Trucks.csv' 
+FROM 'E:\Projects\CDP\hw1\ImportData\Drivers-Trucks.csv' 
 WITH(
 	FIELDTERMINATOR = ',',
 	ROWTERMINATOR = '\n',
