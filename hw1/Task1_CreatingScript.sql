@@ -1,8 +1,12 @@
 USE master;
 
-DROP DATABASE IF EXISTS [Shipment_ML];
+IF DB_ID('Shipment_ML') IS NOT NULL
+BEGIN
+	ALTER DATABASE [Shipment_ML] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+	DROP DATABASE [Shipment_ML];
+END
 
-CREATE DATABASE Shipment_ML;
+CREATE DATABASE [Shipment_ML];
 GO
 USE Shipment_ML;
 
@@ -56,8 +60,8 @@ CREATE TABLE dbo.DriverTruck
 
 ALTER TABLE dbo.DriverTruck
 	ADD CONSTRAINT pk_DriverTruck PRIMARY KEY (DriverId, TruckId),
-		CONSTRAINT fk_DriverTruck_Driver FOREIGN KEY (DriverId) REFERENCES Driver (Id),
-		CONSTRAINT fk_DriverTruck_Truck FOREIGN KEY (TruckId) REFERENCES Truck (Id)
+		CONSTRAINT fk_DriverTruck_Driver FOREIGN KEY (DriverId) REFERENCES dbo.Driver (Id),
+		CONSTRAINT fk_DriverTruck_Truck FOREIGN KEY (TruckId) REFERENCES dbo.Truck (Id)
 
 CREATE TABLE dbo.[Route] (
 	Id INT IDENTITY(1, 1) NOT NULL,

@@ -1,5 +1,8 @@
 USE Shipment_ML;
 
+DECLARE @maxDistance INT = 3000;
+DECLARE @minDistance INT = 100;
+
 INSERT INTO dbo.Route(
 	OriginId,
 	DestinationId,
@@ -8,8 +11,9 @@ INSERT INTO dbo.Route(
 SELECT DISTINCT
     origin.Id,
     destination.Id,
-	FLOOR(RAND(CHECKSUM(NEWID()))*(3000 - 100 +1) + 100)
+	FLOOR(RAND() * (@maxDistance - @minDistance) + @minDistance)
 FROM 
-    dbo.Warehouse AS origin,
+    dbo.Warehouse AS origin
+CROSS JOIN
     dbo.Warehouse AS destination
 WHERE origin.Id != destination.Id;
