@@ -14,32 +14,6 @@ VALUES(
 );
 
 DECLARE @currentRow INT = 0;
-DECLARE @contactId INT = 1;
-DECLARE @cargosToInsert INT = 10000;
-DECLARE @maxVolume INT = 50;
-DECLARE @minVolume INT = 1;
-DECLARE @maxWeight INT = 5000;
-DECLARE @minWeight INT = 1;
-
-WHILE @currentRow < @cargosToInsert
-BEGIN
-	INSERT INTO dbo.Cargo(
-		[Weight],
-		[Volume],
-		[SenderId],
-		[RecipientId]
-	)
-	VALUES(
-		FLOOR(RAND()*(@maxWeight - @minWeight) + @minWeight),
-		FLOOR(RAND()*(@maxVolume - @minVolume) + @minVolume),
-		@contactId,
-		@contactId
-	)
-
-	SET @currentRow = @currentRow + 1;
-END
-
-SET @currentRow = 0;
 DECLARE @shipmentsToInsert INT = 1000;
 DECLARE @routeCount INT;
 DECLARE @truckCount INT;
@@ -100,15 +74,30 @@ BEGIN
 	SET @currentRow = @currentRow + 1;
 END
 
-SET @currentRow = 1;
+SET @currentRow = 0;
+DECLARE @contactId INT = 1;
+DECLARE @cargosToInsert INT = 10000;
+DECLARE @maxVolume INT = 50;
+DECLARE @minVolume INT = 1;
+DECLARE @maxWeight INT = 5000;
+DECLARE @minWeight INT = 1;
 
-WHILE @currentRow <= @cargosToInsert
+WHILE @currentRow < @cargosToInsert
 BEGIN
-	UPDATE dbo.Cargo
-	SET ShipmentId = ROUND(((@shipmentsToInsert - 1) * RAND() + 1), 0)
-	WHERE Id = @currentRow
+	INSERT INTO dbo.Cargo(
+		[Weight],
+		[Volume],
+		[SenderId],
+		[RecipientId],
+		[ShipmentId]
+	)
+	VALUES(
+		FLOOR(RAND()*(@maxWeight - @minWeight) + @minWeight),
+		FLOOR(RAND()*(@maxVolume - @minVolume) + @minVolume),
+		@contactId,
+		@contactId,
+		FLOOR(RAND()*(@shipmentsToInsert - 1) + 1)
+	)
 
 	SET @currentRow = @currentRow + 1;
 END
-
-COMMIT TRANSACTION;
