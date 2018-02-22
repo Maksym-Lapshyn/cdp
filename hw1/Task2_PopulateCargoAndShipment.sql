@@ -14,7 +14,11 @@ VALUES(
 );
 
 DECLARE @currentRow INT = 0;
-DECLARE @shipmentsToInsert INT = 1000;
+DECLARE @shipmentsToInsert INT;
+
+SELECT @shipmentsToInsert = COUNT(*) 
+FROM dbo.Shipment;
+
 DECLARE @routeCount INT;
 DECLARE @truckCount INT;
 

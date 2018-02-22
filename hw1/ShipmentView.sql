@@ -4,7 +4,7 @@ GO
 
 /*FIRST VIEW*/
 
-/*CREATE VIEW dbo.vShipments
+CREATE VIEW dbo.vShipments
 AS
 SELECT 
 	o.City AS Origin,
@@ -28,7 +28,7 @@ FROM dbo.Shipment s
 		ON t.Id = s.TruckId
 GROUP BY s.Id, o.City, d.City, t.BrandName, s.DepartureDate, s.DeliveryDate, r.Distance, t.FuelConsumption;
 
-GO*/
+GO
 
 /*SECOND VIEW*/
 
@@ -39,7 +39,13 @@ ShipmentCargo (Id, RouteId, TruckId, DepartureDate, DeliveryDate, TotalWeight, T
 AS
 (
 	SELECT 
-		s.Id, s.RouteId AS RouteId, s.TruckId AS TruckId, s.DepartureDate AS DepartureDate, s.DeliveryDate AS DeliveryDate, SUM(c.Weight) AS TotalWeight, SUM(c.Volume) AS TotalVolume
+		s.Id,
+		s.RouteId AS RouteId,
+		s.TruckId AS TruckId,
+		s.DepartureDate AS DepartureDate,
+		s.DeliveryDate AS DeliveryDate,
+		SUM(c.Weight) AS TotalWeight,
+		SUM(c.Volume) AS TotalVolume
 	FROM dbo.Shipment AS s
 		LEFT OUTER JOIN dbo.Cargo AS c
 		ON s.Id = c.ShipmentId
