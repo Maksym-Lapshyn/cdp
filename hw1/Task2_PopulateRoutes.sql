@@ -11,7 +11,7 @@ INSERT INTO dbo.Route(
 SELECT DISTINCT
     origin.Id,
     destination.Id,
-	FLOOR(RAND() * (@maxDistance - @minDistance) + @minDistance)
+	FLOOR(RAND(CHECKSUM(NEWID()))*(@maxDistance - @minDistance) + @minDistance)
 FROM 
     dbo.Warehouse AS origin
 CROSS JOIN

@@ -28,28 +28,12 @@ WHILE @currentRow < @shipmentsToInsert
 BEGIN
 	DECLARE @truckId INT = ROUND(((@truckCount - 1) * RAND() + 1), 0);
 	DECLARE @driverId INT;
-
 	DECLARE @dateFrom AS DATETIME = '1990-01-01';
 	DECLARE @dateTo AS DATETIME = '2004-01-01';
-	DECLARE @days_diff AS INT = cast(@dateTo - @dateFrom AS INT);
-	DECLARE @departureDate DATETIME;
-
-	SELECT @departureDate = @dateFrom +
-		DATEADD(second, ABS(CHECKSUM(newid()) % 60), 0) +
-		DATEADD(minute, ABS(CHECKSUM(newid()) % 60), 0) +
-		DATEADD(hour, ABS(CHECKSUM(newid()) % 24), 0) +
-		DATEADD(day, ABS(CHECKSUM(newid()) % @days_diff), 0);
-
+	DECLARE @departureDate DATETIME = dbo.GenerateRandomDate(@dateFrom, @dateTo);
 	SET @dateFrom = '2004-01-01';
 	SET @dateTo = '2018-01-01';
-	SET @days_diff = cast(@dateTo - @dateFrom AS INT);
-	DECLARE @deliveryDate DATETIME;
-
-	SELECT @deliveryDate = @dateFrom +
-		DATEADD(second, ABS(CHECKSUM(newid()) % 60), 0) +
-		DATEADD(minute, ABS(CHECKSUM(newid()) % 60), 0) +
-		DATEADD(hour, ABS(CHECKSUM(newid()) % 24), 0) +
-		DATEADD(day, ABS(CHECKSUM(newid()) % @days_diff), 0);
+	DECLARE @deliveryDate DATETIME = dbo.GenerateRandomDate(@dateFrom, @dateTo);
 
 	SELECT TOP 1 @driverId = DriverId
 	FROM dbo.DriverTruck
@@ -101,3 +85,5 @@ BEGIN
 
 	SET @currentRow = @currentRow + 1;
 END
+
+COMMIT TRANSACTION;
