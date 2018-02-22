@@ -30,7 +30,7 @@ GROUP BY s.Id, o.City, d.City, t.BrandName, s.DepartureDate, s.DeliveryDate, r.D
 
 GO
 
-/*SECOND VIEW*/
+/*SECOND VIEW -- OPTIMAL*/
 
 CREATE VIEW dbo.vShipmentsCTE
 AS
@@ -70,3 +70,33 @@ FROM
 		ON d.Id = r.DestinationId
 	LEFT OUTER JOIN dbo.Truck t
 		ON ShipmentCargo.TruckId = t.Id;
+
+GO
+
+CREATE VIEW dbo.vShipmentsCrossApply
+AS
+SELECT 
+	o.City AS Origin,
+	d.City AS Destination,
+	t.BrandName,
+	s.DepartureDate,
+	s.DeliveryDate,
+	ca.TotalWeight,
+	ca.TotalVolume,
+	(r.Distance * t.FuelConsumption) / 100 AS FuelSpent
+FROM dbo.Shipment s
+	CROSS APPLY
+	(
+		SELECT SUM(c.Weight) AS TotalWeight, SUM(c.Volume) AS TotalVolume
+		FROM dbo.Cargo c
+		WHERE s.Id = c.ShipmentId
+		GROUP BY c.ShipmentId
+	) ca
+	LEFT OUTER JOIN dbo.[Route] r
+		ON r.Id = s.RouteId
+	LEFT OUTER JOIN dbo.Warehouse o
+		ON o.Id = r.OriginId
+	LEFT OUTER JOIN dbo.Warehouse d
+		ON d.Id = r.DestinationId
+	LEFT OUTER JOIN dbo.Truck t
+		ON t.Id = s.TruckId;
