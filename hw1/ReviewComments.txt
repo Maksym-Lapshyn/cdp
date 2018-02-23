@@ -1,4 +1,4 @@
-Server: cdp.database.windows.net
+﻿Server: cdp.database.windows.net
 Login: member
 Password: epamCDP2018
 
@@ -14,5 +14,5 @@ P.S. db schema is ok for me, good job
 
 21.02.18
 
-0) Task2_PopulateCargoAndShipment.sql Remove duplicated code for generating dates, put it into function
-1) All scripts put radnom logic into function
++ 0) Task2_PopulateCargoAndShipment.sql Remove duplicated code for generating dates, put it into function
++ 1) All scripts put radnom logic into function
