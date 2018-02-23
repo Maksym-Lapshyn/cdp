@@ -129,3 +129,21 @@ AS BEGIN
 
     RETURN @departureDate
 END
+
+GO
+
+CREATE PROCEDURE dbo.ImportCSV (@tableName NVARCHAR(100), @path NVARCHAR(100))
+AS BEGIN
+	DECLARE @sqlCommand NVARCHAR(500);
+
+	SET @sqlCommand = 
+		'BULK INSERT ' + @tableName +
+		' FROM ''' + @path  + 
+		''' WITH (
+		FIELDTERMINATOR = '','',
+		ROWTERMINATOR = ''\n'',
+		FIRSTROW = 2
+		);'
+
+	EXEC(@sqlCommand);
+END

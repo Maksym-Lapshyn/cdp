@@ -2,36 +2,18 @@ BEGIN TRANSACTION;
 
 USE Shipment_ML;
 
-BULK INSERT dbo.Truck
-FROM 'D:\Projects\CDP\hw1\ImportData\Trucks.csv' 
-WITH(
-	FIELDTERMINATOR = ',',
-	ROWTERMINATOR = '\n',
-	FIRSTROW = 2
-);
+EXEC dbo.ImportCSV 'dbo.Truck', 'D:\Projects\CDP\hw1\ImportData\Trucks.csv';
 
-BULK INSERT dbo.Driver
-FROM 'D:\Projects\CDP\hw1\ImportData\Drivers.csv' 
-WITH(
-	FIELDTERMINATOR = ',',
-	ROWTERMINATOR = '\n',
-	FIRSTROW = 2
-);
+GO
 
-BULK INSERT dbo.Warehouse
-FROM 'D:\Projects\CDP\hw1\ImportData\Warehouses.csv' 
-WITH(
-	FIELDTERMINATOR = ',',
-	ROWTERMINATOR = '\n',
-	FIRSTROW = 2
-);
+EXEC dbo.ImportCSV 'dbo.Driver', 'D:\Projects\CDP\hw1\ImportData\Drivers.csv';
 
-BULK INSERT dbo.DriverTruck
-FROM 'D:\Projects\CDP\hw1\ImportData\Drivers-Trucks.csv' 
-WITH(
-	FIELDTERMINATOR = ',',
-	ROWTERMINATOR = '\n',
-	FIRSTROW = 2
-);
+GO
+
+EXEC dbo.ImportCSV 'dbo.Warehouse', 'D:\Projects\CDP\hw1\ImportData\Warehouses.csv';
+
+GO
+
+EXEC dbo.ImportCSV 'dbo.DriverTruck', 'D:\Projects\CDP\hw1\ImportData\Drivers-Trucks.csv';
 
 COMMIT TRANSACTION;

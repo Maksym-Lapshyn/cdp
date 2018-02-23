@@ -16,21 +16,21 @@ SELECT
 	SUM(c.Volume) AS TotalVolume,
 	(r.Distance * t.FuelConsumption) / 100 AS FuelSpent
 FROM dbo.Shipment s
-	LEFT OUTER JOIN dbo.Cargo c
+	LEFT JOIN dbo.Cargo c
 		ON c.ShipmentId = s.Id 
-	LEFT OUTER JOIN dbo.[Route] r
+	LEFT JOIN dbo.[Route] r
 		ON r.Id = s.RouteId
-	LEFT OUTER JOIN dbo.Warehouse o
+	LEFT JOIN dbo.Warehouse o
 		ON o.Id = r.OriginId
-	LEFT OUTER JOIN dbo.Warehouse d
+	LEFT JOIN dbo.Warehouse d
 		ON d.Id = r.DestinationId
-	LEFT OUTER JOIN dbo.Truck t
+	LEFT JOIN dbo.Truck t
 		ON t.Id = s.TruckId
 GROUP BY s.Id, o.City, d.City, t.BrandName, s.DepartureDate, s.DeliveryDate, r.Distance, t.FuelConsumption;
 
 GO
 
-/*SECOND VIEW -- OPTIMAL*/
+/*SECOND VIEW*/
 
 CREATE VIEW dbo.vShipmentsCTE
 AS
@@ -62,16 +62,18 @@ SELECT
 	(r.Distance * t.FuelConsumption) / 100 AS FuelSpent
 FROM
 	ShipmentCargo
-	INNER JOIN dbo.[Route] as r
+	LEFT JOIN dbo.[Route] as r
 		ON ShipmentCargo.RouteId = r.Id
-	LEFT OUTER JOIN dbo.Warehouse o
+	LEFT JOIN dbo.Warehouse o
 		ON o.Id = r.OriginId
-	LEFT OUTER JOIN dbo.Warehouse d
+	LEFT JOIN dbo.Warehouse d
 		ON d.Id = r.DestinationId
-	LEFT OUTER JOIN dbo.Truck t
+	LEFT JOIN dbo.Truck t
 		ON ShipmentCargo.TruckId = t.Id;
 
 GO
+
+/*THIRD VIEW -- THE OPTIMAL ONE*/
 
 CREATE VIEW dbo.vShipmentsCrossApply
 AS
@@ -92,11 +94,11 @@ FROM dbo.Shipment s
 		WHERE s.Id = c.ShipmentId
 		GROUP BY c.ShipmentId
 	) ca
-	LEFT OUTER JOIN dbo.[Route] r
+	LEFT JOIN dbo.[Route] r
 		ON r.Id = s.RouteId
-	LEFT OUTER JOIN dbo.Warehouse o
+	LEFT JOIN dbo.Warehouse o
 		ON o.Id = r.OriginId
-	LEFT OUTER JOIN dbo.Warehouse d
+	LEFT JOIN dbo.Warehouse d
 		ON d.Id = r.DestinationId
-	LEFT OUTER JOIN dbo.Truck t
+	LEFT JOIN dbo.Truck t
 		ON t.Id = s.TruckId;

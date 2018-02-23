@@ -19,8 +19,8 @@ P.S. db schema is ok for me, good job
 
 23.02.18
 
-0) Task3_View.sql Remove OUTER from LEFT OUTER JOIN It is redundant;
++ 0) Task3_View.sql Remove OUTER from LEFT OUTER JOIN It is redundant;
 1) Task3_View.sql 1 View, 2 View returns 1000 rows, 3rd one CROSS APPLY view returns 999 it misses next row: "Hartford,Laredo,DAF,2002-02-13 16:48:40.000,2011-08-02 18:30:18.000,NULL,NULL,322"
 This is because there are no Cargo for shipment 1000 - fix it.
-2) Task2_ImportData Check if there is any way to declare path to ImportData folder only once instead of 4 times for each BULK INSERT. 
-3) Task3_View.sql Could you explain me why infirst view you use LEFT JOIN instead of just JOIN?
++ 2) Task2_ImportData Check if there is any way to declare path to ImportData folder only once instead of 4 times for each BULK INSERT. 
++ 3) Task3_View.sql Could you explain me why infirst view you use LEFT JOIN instead of just JOIN?
