@@ -32,7 +32,7 @@ GO
 
 /*Test for procedures*/
 
-DECLARE @fieldName NVARCHAR(100) = 'FirstName';
-DECLARE @fieldValue NVARCHAR(100) = 'John';
+--DECLARE @fieldName NVARCHAR(100) = 'FirstName';
+--DECLARE @fieldValue NVARCHAR(100) = 'John';
 
-EXEC dbo.GetDriversExecuteSQL @fieldName, @fieldValue;
+--EXEC dbo.GetDriversExecuteSQL @fieldName, @fieldValue;
