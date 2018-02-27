@@ -25,7 +25,7 @@ AS BEGIN
 
 	SET @sqlCommand = 'SELECT Firstname, Lastname, Birthdate FROM dbo.Driver WHERE ' + @fieldName + '= @fieldValue;';
 
-	EXECUTE sp_executesql @sqlCommand, N'@fieldName NVARCHAR(100), @fieldValue NVARCHAR(100)',  @fieldName, @fieldValue
+	EXECUTE sp_executesql @sqlCommand, N'@fieldName NVARCHAR(100), @fieldValue NVARCHAR(100)',  @fieldName, @fieldValue;
 END
 
 GO
