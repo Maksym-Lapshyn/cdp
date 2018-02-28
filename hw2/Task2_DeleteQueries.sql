@@ -3,7 +3,7 @@ USE Shipment_ML;
 /*FIRST QUERY*/
 
 DELETE x FROM (
-	SELECT *, rn = ROW_NUMBER() OVER (PARTITION BY RegistrationNumber ORDER BY ID ASC)
+	SELECT *, rn = ROW_NUMBER() OVER (PARTITION BY RegistrationNumber ORDER BY Id ASC)
 	FROM dbo.Truck 
 ) x
 WHERE rn > 1;
