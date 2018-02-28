@@ -1,2 +1,23 @@
 1) Task1_CreateProcedures.sql Add ability to modify stored procedure (this script should be rerunable)!
-2)
+2) Task2_DeleteQueries.sql /*SECOND QUERY*/ does not work - wrong logic. Should work when 3 trucks have same Registration number, should work when there are more than one truck with dulicated Registration number.
+For example insert
+
+USE Shipment_ML;
+
+INSERT INTO dbo.Truck (
+	BrandName,
+	RegistrationNumber,
+    Payload,
+	FuelConsumption,
+	Volume)
+VALUES (
+	'BOGDAN',
+	'1ABC241',	
+	17500,
+	20,
+	95
+);
+and /*SECOND QUERY*/ will not work correctly
+
+3) In all scripts for HM 2 and later use AS syntax - it's easy to read, Example FROM @filterTable AS f instead of FROM @filterTable f; If you saw some convention to don't use AS - we can discuss it.
+4) Task3_CreateXMLProcedure.sql There are 70 % of duplication between first and second implementation of stored procedures, try use COALESCE to concatenate filters https://stackoverflow.com/questions/194852/how-to-concatenate-text-from-multiple-rows-into-a-single-text-string-in-sql-serv
