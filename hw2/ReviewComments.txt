@@ -21,3 +21,5 @@ and /*SECOND QUERY*/ will not work correctly
 
 3) In all scripts for HM 2 and later use AS syntax - it's easy to read, Example FROM @filterTable AS f instead of FROM @filterTable f; If you saw some convention to don't use AS - we can discuss it.
 4) Task3_CreateXMLProcedure.sql There are 70 % of duplication between first and second implementation of stored procedures, try use COALESCE to concatenate filters https://stackoverflow.com/questions/194852/how-to-concatenate-text-from-multiple-rows-into-a-single-text-string-in-sql-serv
+5) Task3_CreateXMLProcedure.sql SELECT fieldName = Node.Data.value( you can write just Data.value( (without Node)
+ Node - is table, Data - is column - if person who reads your code does not know XMLNodes syntax - how he can understand it? Give meaningful names for Node and Data
