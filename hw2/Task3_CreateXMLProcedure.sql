@@ -2,13 +2,18 @@ USE Shipment_ML;
 
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'GetDriversOpenXML')
+DROP PROCEDURE dbo.GetDriversOpenXML
+
+GO
+
 CREATE PROCEDURE dbo.GetDriversOpenXML (@filterList XML)
 AS BEGIN
 	DECLARE @handle INT;
-	DECLARE @PrepareXmlStatus INT;
-	DECLARE @filterTable TABLE (id INT IDENTITY(1,1), fieldName NVARCHAR(100), fieldValue NVARCHAR(100));
+	DECLARE @prepareXmlStatus INT;
+	DECLARE @filterTable TABLE (FieldName NVARCHAR(100), FieldValue NVARCHAR(100));
 
-	EXEC @PrepareXmlStatus= sp_xml_preparedocument @handle OUTPUT, @filterList;
+	EXEC @prepareXmlStatus= sp_xml_preparedocument @handle OUTPUT, @filterList;
 
 	INSERT INTO @filterTable
 	SELECT *
@@ -20,91 +25,48 @@ AS BEGIN
 
 	EXEC sp_xml_removedocument @handle;
 
-	DECLARE @whereTable TABLE (id INT, filter NVARCHAR(100));
+	DECLARE @whereString NVARCHAR(1000);
+	 
+	SELECT @whereString = COALESCE(@whereString + ' AND ' , '') + FieldName + ' = ' + '''' + FieldValue + ''''
+	FROM @filterTable;
 
-	INSERT INTO @whereTable
-		SELECT f.id, (f.fieldName + ' = ' + '''' + f.fieldValue + '''')
-		FROM @filterTable f;
-
-	DECLARE @filterCount INT;
-	DECLARE @counter INT;
-	DECLARE @sqlCommand NVARCHAR(1000);
-	SET @filterCount = (SELECT COUNT(*) FROM @filterTable);
-	SET @counter = 1;
+	DECLARE @sqlCommand NVARCHAR(2000);
 	SET @sqlCommand = 'SELECT Firstname, Lastname, Birthdate FROM dbo.Driver WHERE ';
-	PRINT @sqlCommand;
-
-	WHILE @counter <= @filterCount
-	BEGIN
-		DECLARE @filter NVARCHAR(50);
-		SET @filter = (SELECT filter FROM @whereTable w WHERE w.id = @counter);
-		PRINT @filter;
-
-		IF (@counter = 1)
-		BEGIN
-			SET @sqlCommand = CONCAT(@sqlCommand, '', @filter);
-		END
-
-		IF (@counter > 1)
-		BEGIN
-			SET @sqlCommand = CONCAT(@sqlCommand, ' AND ', @filter);
-		END
-
-		SET @counter = @counter + 1;
-	END
+	SET @sqlCommand = CONCAT(@sqlCommand, '', @whereString);
 
 	EXEC(@sqlCommand);
 END
+
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'GetDriversXMLNodes')
+DROP PROCEDURE dbo.GetDriversXMLNodes
 
 GO
 
 CREATE PROCEDURE dbo.GetDriversXMLNodes (@filterList XML)
 AS BEGIN
-	DECLARE @filterTable TABLE (id INT IDENTITY(1,1), fieldName NVARCHAR(100), fieldValue NVARCHAR(100));
+	DECLARE @filterTable TABLE (FieldName NVARCHAR(100), FieldValue NVARCHAR(100));
 
 	INSERT INTO @filterTable
-	SELECT fieldName = Node.Data.value('(fieldName)[1]', 'NVARCHAR(100)'), fieldValue = Node.Data.value('(fieldValue)[1]', 'NVARCHAR(100)')
-	FROM @filterList.nodes('/filters/filter') Node(Data);
+	SELECT FieldName = Filter.value('(fieldName)[1]', 'NVARCHAR(100)'), FieldValue = Filter.value('(fieldValue)[1]', 'NVARCHAR(100)')
+	FROM @filterList.nodes('/filters/filter') AS Filters(Filter);
 
-	DECLARE @whereTable TABLE (id INT, filter NVARCHAR(100));
+	DECLARE @whereString NVARCHAR(1000);
+	 
+	SELECT @whereString = COALESCE(@whereString + ' AND ' , '') + FieldName + ' = ' + '''' + FieldValue + ''''
+	FROM @filterTable;
 
-	INSERT INTO @whereTable
-		SELECT f.id, (f.fieldName + ' = ' + '''' + f.fieldValue + '''')
-		FROM @filterTable f;
-
-	DECLARE @filterCount INT;
-	DECLARE @counter INT;
-	DECLARE @sqlCommand NVARCHAR(1000);
-	SET @filterCount = (SELECT COUNT(*) FROM @filterTable);
-	SET @counter = 1;
+	DECLARE @sqlCommand NVARCHAR(2000);
 	SET @sqlCommand = 'SELECT Firstname, Lastname, Birthdate FROM dbo.Driver WHERE ';
-	PRINT @sqlCommand;
-
-	WHILE @counter <= @filterCount
-	BEGIN
-		DECLARE @filter NVARCHAR(50);
-		SET @filter = (SELECT filter FROM @whereTable w WHERE w.id = @counter);
-		PRINT @filter;
-
-		IF (@counter = 1)
-		BEGIN
-			SET @sqlCommand = CONCAT(@sqlCommand, '', @filter);
-		END
-
-		IF (@counter > 1)
-		BEGIN
-			SET @sqlCommand = CONCAT(@sqlCommand, ' AND ', @filter);
-		END
-
-		SET @counter = @counter + 1;
-	END
+	SET @sqlCommand = CONCAT(@sqlCommand, '', @whereString);
 
 	EXEC(@sqlCommand);
 END
 
-GO
-
 /*Test for procedures*/
+
+--GO
 
 --DECLARE @filterList AS XML = 
 --'<filters>
