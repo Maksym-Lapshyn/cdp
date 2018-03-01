@@ -2,17 +2,17 @@ USE Shipment_ML;
 
 /*FIRST QUERY*/
 
-DELETE x FROM (
-	SELECT *, rn = ROW_NUMBER() OVER (PARTITION BY RegistrationNumber ORDER BY Id ASC)
+DELETE rowsToDelete FROM (
+	SELECT *, ROW_NUMBER() OVER (PARTITION BY RegistrationNumber ORDER BY Id ASC) AS rowNumber
 	FROM dbo.Truck 
-) x
-WHERE rn > 1;
+) AS rowsToDelete
+WHERE rowNumber > 1;
 
 /*SECOND QUERY*/
 
-DELETE x FROM (
-	SELECT TOP 1 *, total = COUNT(*) OVER (PARTITION BY RegistrationNumber)
+DELETE rowsToDelete FROM (
+	SELECT *, COUNT(*) OVER (PARTITION BY RegistrationNumber) AS rowsCount, MIN(Id) OVER (PARTITION BY RegistrationNumber) AS minId
 	FROM dbo.Truck
-	ORDER BY Id DESC
-) x
-WHERE total > 1;
+) AS rowsToDelete
+WHERE rowsCount > 1
+AND Id != minId;

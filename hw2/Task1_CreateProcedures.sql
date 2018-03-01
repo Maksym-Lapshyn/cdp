@@ -4,6 +4,11 @@ GO
 
 /*Procedure using EXEC*/
 
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'GetDriversExec')
+DROP PROCEDURE dbo.GetDriversExec
+
+GO
+
 CREATE PROCEDURE dbo.GetDriversExec (@fieldName NVARCHAR(100), @fieldValue NVARCHAR(100))
 AS BEGIN
 	DECLARE @sqlCommand NVARCHAR(500);
@@ -12,6 +17,11 @@ AS BEGIN
 
 	EXEC(@sqlCommand);
 END
+
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'GetDriversExecuteSQL')
+DROP PROCEDURE dbo.GetDriversExecuteSQL
 
 GO
 
