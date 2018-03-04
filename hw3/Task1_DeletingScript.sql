@@ -7,7 +7,6 @@ GO
 
 CREATE PROCEDURE dbo.DeleteWarehouse (@warehouseId INT)
 AS BEGIN
-	
 	DECLARE @routesToDelete TABLE (Id INT);
 	DECLARE @shipmentsToDelete TABLE (Id INT);
 	DECLARE @cargosToDelete TABLE (Id INT);
@@ -43,29 +42,27 @@ AS BEGIN
 	DELETE
 	FROM dbo.Warehouse
 	WHERE Id = @warehouseId;
-
 END
 
 /*First variant*/
 
---GO
+GO
 
---BEGIN TRANSACTION
-
---EXEC DeleteWarehouse 8;
---EXEC DeleteWarehouse 16;
---EXEC DeleteWarehouse 24;
-
---COMMIT TRANSACTION
+BEGIN TRANSACTION
+	EXEC DeleteWarehouse 8;
+	EXEC DeleteWarehouse 16;
+	EXEC DeleteWarehouse 24;
+COMMIT TRANSACTION
 
 /*Second variant*/
 
 GO
 
-BEGIN TRANSACTION
-
-EXEC DeleteWarehouse 8;
-EXEC DeleteWarehouse 16;
-EXEC DeleteWarehouse 24;
-
-COMMIT TRANSACTION
+BEGIN TRANSACTION first
+	EXEC DeleteWarehouse 8;
+	SAVE TRANSACTION first
+	BEGIN TRANSACTION second
+		EXEC DeleteWarehouse 16;
+		EXEC DeleteWarehouse 24;
+	ROLLBACK TRANSACTION first
+COMMIT TRANSACTION first
