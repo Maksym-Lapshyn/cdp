@@ -1,6 +1,6 @@
 USE Shipment_ML
 
-set transaction isolation level repeatable read
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ
 
 GO
 
@@ -10,4 +10,4 @@ BEGIN TRANSACTION Transaction1
 	WHERE Id = 2;
 
 	WAITFOR DELAY '00:00:10';
-COMMIT TRANSACTION Transaction2
+COMMIT TRANSACTION Transaction1
