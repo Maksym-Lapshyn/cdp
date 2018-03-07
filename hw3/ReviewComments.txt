@@ -1,5 +1,5 @@
 1) Task1_DeletingScript.sql Don't declare temporary tables like @routesToDelete, put full select queries instead of  IN (SELECT * FROM @routesToDelete)
 2) Task1_DeletingScript.sql what is BEGIN TRANSACTION second, without committing or rolling back?
+3) Task 2, you need to implement it using at least two differen ways it will give you +2 
 
-Task 2 is ok.
 Good job.
