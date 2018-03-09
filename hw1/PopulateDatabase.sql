@@ -132,38 +132,28 @@ END
 
 GO
 
-CREATE PROCEDURE dbo.ImportCSV (@tableName NVARCHAR(100), @path NVARCHAR(100))
-AS BEGIN
-	DECLARE @sqlCommand NVARCHAR(500);
-
-	SET @sqlCommand = 
-		'BULK INSERT ' + @tableName +
-		' FROM ''' + @path  + 
-		''' WITH (
-		FIELDTERMINATOR = '','',
-		ROWTERMINATOR = ''\n'',
-		FIRSTROW = 2
-		);'
-
-	EXEC(@sqlCommand);
-END
+CREATE EXTERNAL DATA SOURCE CdpBlobStorage
+	WITH (
+		TYPE = BLOB_STORAGE,
+		LOCATION = 'https://shipment.blob.core.windows.net/importdata');
 
 GO
 
-EXEC dbo.ImportCSV 'dbo.Truck', 'D:\Projects\CDP\hw1\ImportData\Trucks.csv';
+BULK INSERT dbo.Truck 
+FROM 'Trucks.csv'
+WITH (DATA_SOURCE = 'CdpBlobStorage', FORMAT='CSV', FIRSTROW = 2);
 
-GO
+BULK INSERT dbo.Driver 
+FROM 'Drivers.csv' 
+WITH (DATA_SOURCE = 'CdpBlobStorage', FORMAT='CSV', FIRSTROW = 2);
 
-EXEC dbo.ImportCSV 'dbo.Driver', 'D:\Projects\CDP\hw1\ImportData\Drivers.csv';
+BULK INSERT dbo.DriverTruck 
+FROM 'Drivers-Trucks.csv' 
+WITH (DATA_SOURCE = 'CdpBlobStorage', FORMAT='CSV', FIRSTROW = 2);
 
-GO
-
-EXEC dbo.ImportCSV 'dbo.Warehouse', 'D:\Projects\CDP\hw1\ImportData\Warehouses.csv';
-
-GO
-
-EXEC dbo.ImportCSV 'dbo.DriverTruck', 'D:\Projects\CDP\hw1\ImportData\Drivers-Trucks.csv';
-
+BULK INSERT dbo.Warehouse 
+FROM 'Warehouses.csv' 
+WITH (DATA_SOURCE = 'CdpBlobStorage', FORMAT='CSV', FIRSTROW = 2);
 GO
 
 DECLARE @maxDistance INT = 3000;

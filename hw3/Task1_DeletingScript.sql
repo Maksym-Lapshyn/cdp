@@ -61,7 +61,6 @@ GO
 BEGIN TRANSACTION first
 	EXEC DeleteWarehouse 8;
 	SAVE TRANSACTION first
-	BEGIN TRANSACTION second
 		EXEC DeleteWarehouse 16;
 		EXEC DeleteWarehouse 24;
 	ROLLBACK TRANSACTION first

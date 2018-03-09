@@ -1,16 +1,13 @@
-SET NOCOUNT ON
+USE Shipment_ML;
 
-BEGIN TRY
-	CREATE EXTERNAL DATA SOURCE CdpBlobStorage
-		WITH 
-			(TYPE = BLOB_STORAGE,
-			LOCATION = 'https://shipment.blob.core.windows.net/importdata');
-END TRY
-BEGIN CATCH
-	PRINT('Storage already exists in current database!')
-END CATCH
 GO
 
+CREATE EXTERNAL DATA SOURCE CdpBlobStorage
+	WITH (
+		TYPE = BLOB_STORAGE,
+		LOCATION = 'https://shipment.blob.core.windows.net/importdata');
+
+GO
 
 BULK INSERT dbo.Truck 
 FROM 'Trucks.csv'
