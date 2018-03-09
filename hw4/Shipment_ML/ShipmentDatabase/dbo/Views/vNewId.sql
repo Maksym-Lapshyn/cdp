@@ -1,0 +1,5 @@
+﻿
+CREATE VIEW dbo.vNewId
+AS
+SELECT NEWID() AS Id
+
