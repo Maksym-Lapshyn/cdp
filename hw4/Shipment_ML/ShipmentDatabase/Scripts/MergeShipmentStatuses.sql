@@ -1,5 +1,5 @@
 ﻿MERGE INTO dbo.ShipmentStatus AS t
-USING (VALUES(N'Scheduled'),(N'Departured'),(N'Arrived'),(N'Cancelled')) AS s (DisplayName)
+USING (VALUES(N'Scheduled'),(N'Departured'),(N'Arrived'),(N'Cancelled'),(N'Completed')) AS s (DisplayName)
 ON (t.DisplayName = s.DisplayName)
 WHEN MATCHED AND (t.DisplayName <> s.DisplayName) THEN
     UPDATE SET
