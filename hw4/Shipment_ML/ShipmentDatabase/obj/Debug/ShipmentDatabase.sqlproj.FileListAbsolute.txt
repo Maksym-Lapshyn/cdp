@@ -11,3 +11,7 @@ E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\bin\Debug\ShipmentDatabase.dll
 E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\bin\Debug\ShipmentDatabase.pdb
 E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\ShipmentDatabase.dll
 E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\ShipmentDatabase.pdb
+E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\Model.xml
+E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\refactor.xml
+E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\postdeploy.sql
+E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\predeploy.sql

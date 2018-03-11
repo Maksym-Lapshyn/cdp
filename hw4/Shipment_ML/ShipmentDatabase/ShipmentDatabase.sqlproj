@@ -82,6 +82,7 @@
     <Build Include="dbo\Stored Procedures\GetDriversExecuteSQL.sql" />
     <Build Include="dbo\Stored Procedures\GetDriversOpenXML.sql" />
     <Build Include="dbo\Stored Procedures\GetDriversXMLNodes.sql" />
+    <Build Include="dbo\Tables\ShipmentStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
@@ -95,5 +96,6 @@
     <None Include="Scripts\ImportWarehouses.sql" />
     <None Include="LocalProfile.publish.publish.xml" />
     <None Include="AzureProfile.publish.publish.xml" />
+    <None Include="Scripts\MergeShipmentStatuses.sql" />
   </ItemGroup>
 </Project>

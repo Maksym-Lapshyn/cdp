@@ -1,0 +1,41 @@
+﻿** Выделение
+     Таблицы, которые будут перестроены
+       Нет
+     Кластеризованные индексы, которые будут удалены
+       Нет
+     Кластеризованные индексы, которые будут созданы
+       Нет
+     Возможные проблемы, связанные с данными
+       Нет
+
+** Действия пользователя
+     Создать
+       [dbo].[Cargo] (Таблица)
+       [dbo].[ContactInformation] (Таблица)
+       [dbo].[Driver] (Таблица)
+       [dbo].[DriverTruck] (Таблица)
+       [dbo].[Route] (Таблица)
+       [dbo].[Shipment] (Таблица)
+       [dbo].[ShipmentStatus] (Таблица)
+       [dbo].[Truck] (Таблица)
+       [dbo].[Warehouse] (Таблица)
+       Ограничение по умолчанию: ограничение без названия для [dbo].[Shipment] (Ограничение по умолчанию)
+       [dbo].[fk_Cargo_Recipient] (Внешний ключ)
+       [dbo].[fk_Cargo_Sender] (Внешний ключ)
+       [dbo].[fk_Cargo_Shipment] (Внешний ключ)
+       [dbo].[fk_DriverTruck_Driver] (Внешний ключ)
+       [dbo].[fk_DriverTruck_Truck] (Внешний ключ)
+       [dbo].[fk_Route_Destination] (Внешний ключ)
+       [dbo].[fk_Route_Origin] (Внешний ключ)
+       [dbo].[fk_Shipment_Driver] (Внешний ключ)
+       [dbo].[fk_Shipment_Route] (Внешний ключ)
+       [dbo].[fk_Shipment_Truck] (Внешний ключ)
+       [dbo].[fk_Shipment_Status] (Внешний ключ)
+       [dbo].[vNewId] (Представление)
+       [dbo].[GenerateRandomDate] (Функция)
+       [dbo].[GetDriversExec] (Процедура)
+       [dbo].[GetDriversExecuteSQL] (Процедура)
+       [dbo].[GetDriversOpenXML] (Процедура)
+       [dbo].[GetDriversXMLNodes] (Процедура)
+
+** Корректирующие действия
