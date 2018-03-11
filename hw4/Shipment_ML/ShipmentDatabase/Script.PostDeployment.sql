@@ -9,3 +9,10 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]                    
 --------------------------------------------------------------------------------------
 */
+
+:r .\Scripts\ImportDrivers.sql
+:r .\Scripts\ImportTrucks.sql
+:r .\Scripts\ImportDriversTrucks.sql
+:r .\Scripts\ImportWarehouses.sql
+:r .\Scripts\PopulateRoutes.sql
+:r .\Scripts\PopulateCargoAndShipment.sql

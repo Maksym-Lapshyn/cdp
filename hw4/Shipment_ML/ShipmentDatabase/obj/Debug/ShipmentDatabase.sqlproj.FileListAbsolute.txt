@@ -6,3 +6,8 @@ D:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\postdeploy.sql
 D:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\predeploy.sql
 D:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\ShipmentDatabase.dll
 D:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\ShipmentDatabase.pdb
+E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\bin\Debug\ShipmentDatabase.dacpac
+E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\bin\Debug\ShipmentDatabase.dll
+E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\bin\Debug\ShipmentDatabase.pdb
+E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\ShipmentDatabase.dll
+E:\Projects\CDP\hw4\Shipment_ML\ShipmentDatabase\obj\Debug\ShipmentDatabase.pdb

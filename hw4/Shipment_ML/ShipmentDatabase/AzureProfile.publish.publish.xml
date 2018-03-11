@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseName>Shipment_ML</TargetDatabaseName>
+    <DeployScriptFileName>ShipmentDatabase.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=cdp.database.windows.net;Persist Security Info=True;User ID=member;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True</TargetConnectionString>
+    <BlockOnPossibleDataLoss>True</BlockOnPossibleDataLoss>
+    <CreateNewDatabase>True</CreateNewDatabase>
+    <BlockWhenDriftDetected>True</BlockWhenDriftDetected>
+    <RegisterDataTierApplication>True</RegisterDataTierApplication>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
+  </PropertyGroup>
+</Project>

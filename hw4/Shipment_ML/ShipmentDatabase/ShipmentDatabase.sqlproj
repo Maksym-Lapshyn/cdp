@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{8004bfcb-6e3b-423e-9280-ef5456ac1b59}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql140DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -25,6 +25,7 @@
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <DacVersion>1.0.0</DacVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -64,7 +65,6 @@
     <Folder Include="dbo\Views\" />
     <Folder Include="dbo\Functions\" />
     <Folder Include="dbo\Stored Procedures\" />
-    <Folder Include="External Resources\" />
     <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
@@ -82,14 +82,18 @@
     <Build Include="dbo\Stored Procedures\GetDriversExecuteSQL.sql" />
     <Build Include="dbo\Stored Procedures\GetDriversOpenXML.sql" />
     <Build Include="dbo\Stored Procedures\GetDriversXMLNodes.sql" />
-    <Build Include="External Resources\CdpBlobStorage.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scripts\ImportDataFromBlobStorage.sql" />
     <None Include="Scripts\PopulateRoutes.sql" />
     <None Include="Scripts\PopulateCargoAndShipment.sql" />
+    <None Include="Scripts\ImportDrivers.sql" />
+    <None Include="Scripts\ImportTrucks.sql" />
+    <None Include="Scripts\ImportDriversTrucks.sql" />
+    <None Include="Scripts\ImportWarehouses.sql" />
+    <None Include="LocalProfile.publish.publish.xml" />
+    <None Include="AzureProfile.publish.publish.xml" />
   </ItemGroup>
 </Project>
