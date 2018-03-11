@@ -581,7 +581,7 @@
 			</Relationship>
 			<Annotation Type="SqlInlineConstraintAnnotation" Disambiguator="16" />
 		</Element>
-		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[fk_Shipment_Status]">
+		<Element Type="SqlForeignKeyConstraint" Name="[dbo].[fk_Shipment_ShipmentStatus]">
 			<Relationship Name="Columns">
 				<Entry>
 					<References Name="[dbo].[Shipment].[Status]" />

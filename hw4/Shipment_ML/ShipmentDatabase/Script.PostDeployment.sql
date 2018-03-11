@@ -15,5 +15,5 @@ Post-Deployment Script Template
 :r .\Scripts\ImportDriversTrucks.sql
 :r .\Scripts\ImportWarehouses.sql
 :r .\Scripts\PopulateRoutes.sql
-:r .\Scripts\PopulateCargoAndShipment.sql
 :r .\Scripts\MergeShipmentStatuses.sql
+:r .\Scripts\PopulateCargoAndShipment.sql

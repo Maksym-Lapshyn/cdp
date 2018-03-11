@@ -1,4 +1,628 @@
 ﻿/*
+Скрипт развертывания для Shipment_ML
+
+Этот код был создан программным средством.
+Изменения, внесенные в этот файл, могут привести к неверному выполнению кода и будут потеряны
+в случае его повторного формирования.
+*/
+
+GO
+SET ANSI_NULLS, ANSI_PADDING, ANSI_WARNINGS, ARITHABORT, CONCAT_NULL_YIELDS_NULL, QUOTED_IDENTIFIER ON;
+
+SET NUMERIC_ROUNDABORT OFF;
+
+
+GO
+:setvar DatabaseName "Shipment_ML"
+:setvar DefaultFilePrefix "Shipment_ML"
+:setvar DefaultDataPath "C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\"
+:setvar DefaultLogPath "C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\"
+
+GO
+:on error exit
+GO
+/*
+Проверьте режим SQLCMD и отключите выполнение скрипта, если режим SQLCMD не поддерживается.
+Чтобы повторно включить скрипт после включения режима SQLCMD выполните следующую инструкцию:
+SET NOEXEC OFF; 
+*/
+:setvar __IsSqlCmdEnabled "True"
+GO
+IF N'$(__IsSqlCmdEnabled)' NOT LIKE N'True'
+    BEGIN
+        PRINT N'Для успешного выполнения этого скрипта должен быть включен режим SQLCMD.';
+        SET NOEXEC ON;
+    END
+
+
+GO
+USE [master];
+
+
+GO
+
+IF (DB_ID(N'$(DatabaseName)') IS NOT NULL) 
+BEGIN
+    ALTER DATABASE [$(DatabaseName)]
+    SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE [$(DatabaseName)];
+END
+
+GO
+PRINT N'Выполняется создание $(DatabaseName)...'
+GO
+CREATE DATABASE [$(DatabaseName)]
+    ON 
+    PRIMARY(NAME = [$(DatabaseName)], FILENAME = N'$(DefaultDataPath)$(DefaultFilePrefix)_Primary.mdf')
+    LOG ON (NAME = [$(DatabaseName)_log], FILENAME = N'$(DefaultLogPath)$(DefaultFilePrefix)_Primary.ldf') COLLATE SQL_Latin1_General_CP1_CI_AS
+GO
+USE [$(DatabaseName)];
+
+
+GO
+IF EXISTS (SELECT 1
+           FROM   [master].[dbo].[sysdatabases]
+           WHERE  [name] = N'$(DatabaseName)')
+    BEGIN
+        ALTER DATABASE [$(DatabaseName)]
+            SET ANSI_NULLS ON,
+                ANSI_PADDING ON,
+                ANSI_WARNINGS ON,
+                ARITHABORT ON,
+                CONCAT_NULL_YIELDS_NULL ON,
+                NUMERIC_ROUNDABORT OFF,
+                QUOTED_IDENTIFIER ON,
+                ANSI_NULL_DEFAULT ON,
+                CURSOR_DEFAULT LOCAL,
+                RECOVERY FULL,
+                CURSOR_CLOSE_ON_COMMIT OFF,
+                AUTO_CREATE_STATISTICS ON,
+                AUTO_SHRINK OFF,
+                AUTO_UPDATE_STATISTICS ON,
+                RECURSIVE_TRIGGERS OFF 
+            WITH ROLLBACK IMMEDIATE;
+        ALTER DATABASE [$(DatabaseName)]
+            SET AUTO_CLOSE OFF 
+            WITH ROLLBACK IMMEDIATE;
+    END
+
+
+GO
+IF EXISTS (SELECT 1
+           FROM   [master].[dbo].[sysdatabases]
+           WHERE  [name] = N'$(DatabaseName)')
+    BEGIN
+        ALTER DATABASE [$(DatabaseName)]
+            SET ALLOW_SNAPSHOT_ISOLATION OFF;
+    END
+
+
+GO
+IF EXISTS (SELECT 1
+           FROM   [master].[dbo].[sysdatabases]
+           WHERE  [name] = N'$(DatabaseName)')
+    BEGIN
+        ALTER DATABASE [$(DatabaseName)]
+            SET READ_COMMITTED_SNAPSHOT OFF 
+            WITH ROLLBACK IMMEDIATE;
+    END
+
+
+GO
+IF EXISTS (SELECT 1
+           FROM   [master].[dbo].[sysdatabases]
+           WHERE  [name] = N'$(DatabaseName)')
+    BEGIN
+        ALTER DATABASE [$(DatabaseName)]
+            SET AUTO_UPDATE_STATISTICS_ASYNC OFF,
+                PAGE_VERIFY NONE,
+                DATE_CORRELATION_OPTIMIZATION OFF,
+                DISABLE_BROKER,
+                PARAMETERIZATION SIMPLE,
+                SUPPLEMENTAL_LOGGING OFF 
+            WITH ROLLBACK IMMEDIATE;
+    END
+
+
+GO
+IF IS_SRVROLEMEMBER(N'sysadmin') = 1
+    BEGIN
+        IF EXISTS (SELECT 1
+                   FROM   [master].[dbo].[sysdatabases]
+                   WHERE  [name] = N'$(DatabaseName)')
+            BEGIN
+                EXECUTE sp_executesql N'ALTER DATABASE [$(DatabaseName)]
+    SET TRUSTWORTHY OFF,
+        DB_CHAINING OFF 
+    WITH ROLLBACK IMMEDIATE';
+            END
+    END
+ELSE
+    BEGIN
+        PRINT N'Параметры базы данных изменить нельзя. Применить эти параметры может только пользователь SysAdmin.';
+    END
+
+
+GO
+IF IS_SRVROLEMEMBER(N'sysadmin') = 1
+    BEGIN
+        IF EXISTS (SELECT 1
+                   FROM   [master].[dbo].[sysdatabases]
+                   WHERE  [name] = N'$(DatabaseName)')
+            BEGIN
+                EXECUTE sp_executesql N'ALTER DATABASE [$(DatabaseName)]
+    SET HONOR_BROKER_PRIORITY OFF 
+    WITH ROLLBACK IMMEDIATE';
+            END
+    END
+ELSE
+    BEGIN
+        PRINT N'Параметры базы данных изменить нельзя. Применить эти параметры может только пользователь SysAdmin.';
+    END
+
+
+GO
+ALTER DATABASE [$(DatabaseName)]
+    SET TARGET_RECOVERY_TIME = 0 SECONDS 
+    WITH ROLLBACK IMMEDIATE;
+
+
+GO
+IF EXISTS (SELECT 1
+           FROM   [master].[dbo].[sysdatabases]
+           WHERE  [name] = N'$(DatabaseName)')
+    BEGIN
+        ALTER DATABASE [$(DatabaseName)]
+            SET FILESTREAM(NON_TRANSACTED_ACCESS = OFF),
+                CONTAINMENT = NONE 
+            WITH ROLLBACK IMMEDIATE;
+    END
+
+
+GO
+IF EXISTS (SELECT 1
+           FROM   [master].[dbo].[sysdatabases]
+           WHERE  [name] = N'$(DatabaseName)')
+    BEGIN
+        ALTER DATABASE [$(DatabaseName)]
+            SET AUTO_CREATE_STATISTICS ON(INCREMENTAL = OFF),
+                MEMORY_OPTIMIZED_ELEVATE_TO_SNAPSHOT = OFF,
+                DELAYED_DURABILITY = DISABLED 
+            WITH ROLLBACK IMMEDIATE;
+    END
+
+
+GO
+IF EXISTS (SELECT 1
+           FROM   [master].[dbo].[sysdatabases]
+           WHERE  [name] = N'$(DatabaseName)')
+    BEGIN
+        ALTER DATABASE [$(DatabaseName)]
+            SET QUERY_STORE (QUERY_CAPTURE_MODE = ALL, DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_PLANS_PER_QUERY = 200, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 367), MAX_STORAGE_SIZE_MB = 100) 
+            WITH ROLLBACK IMMEDIATE;
+    END
+
+
+GO
+IF EXISTS (SELECT 1
+           FROM   [master].[dbo].[sysdatabases]
+           WHERE  [name] = N'$(DatabaseName)')
+    BEGIN
+        ALTER DATABASE [$(DatabaseName)]
+            SET QUERY_STORE = OFF 
+            WITH ROLLBACK IMMEDIATE;
+    END
+
+
+GO
+IF EXISTS (SELECT 1
+           FROM   [master].[dbo].[sysdatabases]
+           WHERE  [name] = N'$(DatabaseName)')
+    BEGIN
+        ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 0;
+        ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET MAXDOP = PRIMARY;
+        ALTER DATABASE SCOPED CONFIGURATION SET LEGACY_CARDINALITY_ESTIMATION = OFF;
+        ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET LEGACY_CARDINALITY_ESTIMATION = PRIMARY;
+        ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SNIFFING = ON;
+        ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET PARAMETER_SNIFFING = PRIMARY;
+        ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
+        ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET QUERY_OPTIMIZER_HOTFIXES = PRIMARY;
+    END
+
+
+GO
+IF EXISTS (SELECT 1
+           FROM   [master].[dbo].[sysdatabases]
+           WHERE  [name] = N'$(DatabaseName)')
+    BEGIN
+        ALTER DATABASE [$(DatabaseName)]
+            SET TEMPORAL_HISTORY_RETENTION ON 
+            WITH ROLLBACK IMMEDIATE;
+    END
+
+
+GO
+IF fulltextserviceproperty(N'IsFulltextInstalled') = 1
+    EXECUTE sp_fulltext_database 'enable';
+
+
+GO
+PRINT N'Выполняется создание [dbo].[Cargo]...';
+
+
+GO
+CREATE TABLE [dbo].[Cargo] (
+    [Id]          INT IDENTITY (1, 1) NOT NULL,
+    [Weight]      INT NOT NULL,
+    [Volume]      INT NOT NULL,
+    [SenderId]    INT NOT NULL,
+    [RecipientId] INT NOT NULL,
+    [ShipmentId]  INT NULL,
+    CONSTRAINT [pk_Cargo] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[ContactInformation]...';
+
+
+GO
+CREATE TABLE [dbo].[ContactInformation] (
+    [Id]        INT            IDENTITY (1, 1) NOT NULL,
+    [FirstName] NVARCHAR (100) NOT NULL,
+    [LastName]  NVARCHAR (100) NOT NULL,
+    [CellPhone] NVARCHAR (20)  NOT NULL,
+    CONSTRAINT [pk_ContactInformation] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[Driver]...';
+
+
+GO
+CREATE TABLE [dbo].[Driver] (
+    [Id]        INT            IDENTITY (1, 1) NOT NULL,
+    [FirstName] NVARCHAR (100) NOT NULL,
+    [LastName]  NVARCHAR (100) NOT NULL,
+    [Birthdate] NVARCHAR (100) NOT NULL,
+    CONSTRAINT [pk_Driver] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[DriverTruck]...';
+
+
+GO
+CREATE TABLE [dbo].[DriverTruck] (
+    [TruckId]  INT NOT NULL,
+    [DriverId] INT NOT NULL,
+    CONSTRAINT [pk_DriverTruck] PRIMARY KEY CLUSTERED ([DriverId] ASC, [TruckId] ASC)
+);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[Route]...';
+
+
+GO
+CREATE TABLE [dbo].[Route] (
+    [Id]            INT IDENTITY (1, 1) NOT NULL,
+    [OriginId]      INT NULL,
+    [DestinationId] INT NULL,
+    [Distance]      INT NOT NULL,
+    CONSTRAINT [pk_Route] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[Shipment]...';
+
+
+GO
+CREATE TABLE [dbo].[Shipment] (
+    [Id]             INT      IDENTITY (1, 1) NOT NULL,
+    [RouteId]        INT      NOT NULL,
+    [DriverId]       INT      NOT NULL,
+    [TruckId]        INT      NOT NULL,
+    [DepartureDate]  DATETIME NOT NULL,
+    [DeliveryDate]   DATETIME NOT NULL,
+    [ActualDistance] INT      NULL,
+    [Status]         INT      NOT NULL,
+    CONSTRAINT [pk_Shipment] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[ShipmentStatus]...';
+
+
+GO
+CREATE TABLE [dbo].[ShipmentStatus] (
+    [Id]          INT           IDENTITY (1, 1) NOT NULL,
+    [DisplayName] NVARCHAR (50) NOT NULL,
+    CONSTRAINT [pk_ShipmentStatus] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[Truck]...';
+
+
+GO
+CREATE TABLE [dbo].[Truck] (
+    [Id]                 INT            IDENTITY (1, 1) NOT NULL,
+    [BrandName]          NVARCHAR (100) NOT NULL,
+    [RegistrationNumber] NVARCHAR (100) NOT NULL,
+    [Year]               NVARCHAR (50)  NULL,
+    [Payload]            INT            NOT NULL,
+    [FuelConsumption]    INT            NOT NULL,
+    [Volume]             INT            NOT NULL,
+    CONSTRAINT [pk_Truck] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[Warehouse]...';
+
+
+GO
+CREATE TABLE [dbo].[Warehouse] (
+    [Id]    INT           IDENTITY (1, 1) NOT NULL,
+    [City]  NVARCHAR (50) NOT NULL,
+    [State] NVARCHAR (50) NOT NULL,
+    CONSTRAINT [pk_Warehouse] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Выполняется создание ограничение без названия для [dbo].[Shipment]...';
+
+
+GO
+ALTER TABLE [dbo].[Shipment]
+    ADD DEFAULT 1 FOR [Status];
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_Cargo_Recipient]...';
+
+
+GO
+ALTER TABLE [dbo].[Cargo]
+    ADD CONSTRAINT [fk_Cargo_Recipient] FOREIGN KEY ([RecipientId]) REFERENCES [dbo].[ContactInformation] ([Id]);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_Cargo_Sender]...';
+
+
+GO
+ALTER TABLE [dbo].[Cargo]
+    ADD CONSTRAINT [fk_Cargo_Sender] FOREIGN KEY ([SenderId]) REFERENCES [dbo].[ContactInformation] ([Id]);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_Cargo_Shipment]...';
+
+
+GO
+ALTER TABLE [dbo].[Cargo]
+    ADD CONSTRAINT [fk_Cargo_Shipment] FOREIGN KEY ([ShipmentId]) REFERENCES [dbo].[Shipment] ([Id]) ON DELETE SET NULL;
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_DriverTruck_Driver]...';
+
+
+GO
+ALTER TABLE [dbo].[DriverTruck]
+    ADD CONSTRAINT [fk_DriverTruck_Driver] FOREIGN KEY ([DriverId]) REFERENCES [dbo].[Driver] ([Id]);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_DriverTruck_Truck]...';
+
+
+GO
+ALTER TABLE [dbo].[DriverTruck]
+    ADD CONSTRAINT [fk_DriverTruck_Truck] FOREIGN KEY ([TruckId]) REFERENCES [dbo].[Truck] ([Id]);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_Route_Destination]...';
+
+
+GO
+ALTER TABLE [dbo].[Route]
+    ADD CONSTRAINT [fk_Route_Destination] FOREIGN KEY ([DestinationId]) REFERENCES [dbo].[Warehouse] ([Id]);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_Route_Origin]...';
+
+
+GO
+ALTER TABLE [dbo].[Route]
+    ADD CONSTRAINT [fk_Route_Origin] FOREIGN KEY ([OriginId]) REFERENCES [dbo].[Warehouse] ([Id]);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_Shipment_Driver]...';
+
+
+GO
+ALTER TABLE [dbo].[Shipment]
+    ADD CONSTRAINT [fk_Shipment_Driver] FOREIGN KEY ([DriverId]) REFERENCES [dbo].[Driver] ([Id]);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_Shipment_Route]...';
+
+
+GO
+ALTER TABLE [dbo].[Shipment]
+    ADD CONSTRAINT [fk_Shipment_Route] FOREIGN KEY ([RouteId]) REFERENCES [dbo].[Route] ([Id]);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_Shipment_Truck]...';
+
+
+GO
+ALTER TABLE [dbo].[Shipment]
+    ADD CONSTRAINT [fk_Shipment_Truck] FOREIGN KEY ([TruckId]) REFERENCES [dbo].[Truck] ([Id]);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[fk_Shipment_ShipmentStatus]...';
+
+
+GO
+ALTER TABLE [dbo].[Shipment]
+    ADD CONSTRAINT [fk_Shipment_ShipmentStatus] FOREIGN KEY ([Status]) REFERENCES [dbo].[ShipmentStatus] ([Id]);
+
+
+GO
+PRINT N'Выполняется создание [dbo].[vNewId]...';
+
+
+GO
+
+CREATE VIEW dbo.vNewId
+AS
+SELECT NEWID() AS Id
+GO
+PRINT N'Выполняется создание [dbo].[GenerateRandomDate]...';
+
+
+GO
+
+CREATE FUNCTION dbo.GenerateRandomDate (@dateFrom DATETIME, @dateTo DATETIME)
+RETURNS DATETIME
+AS BEGIN
+    DECLARE @days_diff AS INT = cast(@dateTo - @dateFrom AS INT);
+	DECLARE @departureDate DATETIME;
+
+	SELECT @departureDate = @dateFrom +
+		DATEADD(second, ABS(CHECKSUM((SELECT Id FROM dbo.vNewId)) % 60), 0) +
+		DATEADD(minute, ABS(CHECKSUM((SELECT Id FROM dbo.vNewId)) % 60), 0) +
+		DATEADD(hour, ABS(CHECKSUM((SELECT Id FROM dbo.vNewId)) % 24), 0) +
+		DATEADD(day, ABS(CHECKSUM((SELECT Id FROM dbo.vNewId)) % @days_diff), 0);
+
+    RETURN @departureDate
+END
+GO
+PRINT N'Выполняется создание [dbo].[GetDriversExec]...';
+
+
+GO
+
+CREATE PROCEDURE dbo.GetDriversExec (@fieldName NVARCHAR(100), @fieldValue NVARCHAR(100))
+AS BEGIN
+	DECLARE @sqlCommand NVARCHAR(500);
+
+	SET @sqlCommand = 'SELECT Firstname, Lastname, Birthdate FROM dbo.Driver WHERE ' + @fieldName + ' = ''' + @fieldValue  + ''';';
+
+	EXEC(@sqlCommand);
+END
+GO
+PRINT N'Выполняется создание [dbo].[GetDriversExecuteSQL]...';
+
+
+GO
+
+/*Procedure using EXECUTE sp_executesql*/
+
+CREATE PROCEDURE dbo.GetDriversExecuteSQL (@fieldName NVARCHAR(100), @fieldValue NVARCHAR(100))
+AS BEGIN
+	DECLARE @sqlCommand NVARCHAR(500);
+
+	SET @sqlCommand = 'SELECT Firstname, Lastname, Birthdate FROM dbo.Driver WHERE ' + @fieldName + '= @fieldValue;';
+
+	EXECUTE sp_executesql @sqlCommand, N'@fieldValue NVARCHAR(100)', @fieldValue;
+END
+GO
+PRINT N'Выполняется создание [dbo].[GetDriversOpenXML]...';
+
+
+GO
+
+CREATE PROCEDURE dbo.GetDriversOpenXML (@filterList XML)
+AS BEGIN
+	DECLARE @handle INT;
+	DECLARE @prepareXmlStatus INT;
+	DECLARE @filterTable TABLE (FieldName NVARCHAR(100), FieldValue NVARCHAR(100));
+
+	EXEC @prepareXmlStatus= sp_xml_preparedocument @handle OUTPUT, @filterList;
+
+	INSERT INTO @filterTable
+	SELECT *
+	FROM OPENXML(@handle, '/filters/filter', 2)  
+	WITH (
+		fieldName NVARCHAR(100),
+		fieldValue NVARCHAR(100)
+	);
+
+	EXEC sp_xml_removedocument @handle;
+
+	DECLARE @whereString NVARCHAR(1000);
+	 
+	SELECT @whereString = COALESCE(@whereString + ' AND ' , '') + FieldName + ' = ' + '''' + FieldValue + ''''
+	FROM @filterTable;
+
+	DECLARE @sqlCommand NVARCHAR(2000);
+	SET @sqlCommand = 'SELECT Firstname, Lastname, Birthdate FROM dbo.Driver WHERE ';
+	SET @sqlCommand = CONCAT(@sqlCommand, '', @whereString);
+
+	EXEC(@sqlCommand);
+END
+GO
+PRINT N'Выполняется создание [dbo].[GetDriversXMLNodes]...';
+
+
+GO
+
+CREATE PROCEDURE dbo.GetDriversXMLNodes (@filterList XML)
+AS BEGIN
+	DECLARE @filterTable TABLE (FieldName NVARCHAR(100), FieldValue NVARCHAR(100));
+
+	INSERT INTO @filterTable
+	SELECT FieldName = Filter.value('(fieldName)[1]', 'NVARCHAR(100)'), FieldValue = Filter.value('(fieldValue)[1]', 'NVARCHAR(100)')
+	FROM @filterList.nodes('/filters/filter') AS Filters(Filter);
+
+	DECLARE @whereString NVARCHAR(1000);
+	 
+	SELECT @whereString = COALESCE(@whereString + ' AND ' , '') + FieldName + ' = ' + '''' + FieldValue + ''''
+	FROM @filterTable;
+
+	DECLARE @sqlCommand NVARCHAR(2000);
+	SET @sqlCommand = 'SELECT Firstname, Lastname, Birthdate FROM dbo.Driver WHERE ';
+	SET @sqlCommand = CONCAT(@sqlCommand, '', @whereString);
+
+	EXEC(@sqlCommand);
+END
+
+/*Test for procedures*/
+
+--GO
+
+--DECLARE @filterList AS XML = 
+--'<filters>
+--	<filter>
+--		<fieldName>LastName</fieldName>
+--		<fieldValue>Olson</fieldValue>
+--	</filter>
+--	<filter>
+--		<fieldName>FirstName</fieldName>
+--		<fieldValue>Alta</fieldValue>
+--	</filter>
+--</filters>';
+
+--EXEC dbo.GetDriversXMLNodes @filterList;
+GO
+/*
 Post-Deployment Script Template                            
 --------------------------------------------------------------------------------------
  This file contains SQL statements that will be appended to the build script.        
@@ -478,4 +1102,28 @@ BEGIN
 
 	SET @currentRow = @currentRow + 1;
 END
+GO
+
+GO
+DECLARE @VarDecimalSupported AS BIT;
+
+SELECT @VarDecimalSupported = 0;
+
+IF ((ServerProperty(N'EngineEdition') = 3)
+    AND (((@@microsoftversion / power(2, 24) = 9)
+          AND (@@microsoftversion & 0xffff >= 3024))
+         OR ((@@microsoftversion / power(2, 24) = 10)
+             AND (@@microsoftversion & 0xffff >= 1600))))
+    SELECT @VarDecimalSupported = 1;
+
+IF (@VarDecimalSupported > 0)
+    BEGIN
+        EXECUTE sp_db_vardecimal_storage_format N'$(DatabaseName)', 'ON';
+    END
+
+
+GO
+PRINT N'Обновление завершено.';
+
+
 GO
