@@ -1,5 +1,4 @@
-﻿
-CREATE FUNCTION dbo.GenerateRandomDate (@dateFrom DATETIME, @dateTo DATETIME)
+﻿CREATE FUNCTION dbo.GenerateRandomDate (@dateFrom DATETIME, @dateTo DATETIME)
 RETURNS DATETIME
 AS BEGIN
     DECLARE @days_diff AS INT = cast(@dateTo - @dateFrom AS INT);

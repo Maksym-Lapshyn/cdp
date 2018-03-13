@@ -83,6 +83,8 @@
     <Build Include="dbo\Stored Procedures\GetDriversOpenXML.sql" />
     <Build Include="dbo\Stored Procedures\GetDriversXMLNodes.sql" />
     <Build Include="dbo\Tables\ShipmentStatus.sql" />
+    <Build Include="dbo\Views\vShipments.sql" />
+    <Build Include="dbo\Functions\CalculateUtilizedPercentage.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
@@ -97,5 +99,6 @@
     <None Include="LocalProfile.publish.publish.xml" />
     <None Include="AzureProfile.publish.publish.xml" />
     <None Include="Scripts\MergeShipmentStatuses.sql" />
+    <None Include="Scripts\UpdateTruckNames.sql" />
   </ItemGroup>
 </Project>

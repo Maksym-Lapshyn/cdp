@@ -3,7 +3,7 @@ USING (VALUES(N'Scheduled'),(N'Departured'),(N'Arrived'),(N'Cancelled'),(N'Compl
 ON (t.DisplayName = s.DisplayName)
 WHEN MATCHED AND (t.DisplayName <> s.DisplayName) THEN
     UPDATE SET
-    DisplayName = s.DisplayName
+    t.DisplayName = s.DisplayName
 WHEN NOT MATCHED BY TARGET THEN
     INSERT(DisplayName)
     VALUES(s.DisplayName)

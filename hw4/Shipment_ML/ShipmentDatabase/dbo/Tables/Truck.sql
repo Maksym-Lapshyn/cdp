@@ -6,6 +6,7 @@
     [Payload]            INT            NOT NULL,
     [FuelConsumption]    INT            NOT NULL,
     [Volume]             INT            NOT NULL,
+    [Name]          NVARCHAR (100) NULL,
     CONSTRAINT [pk_Truck] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
