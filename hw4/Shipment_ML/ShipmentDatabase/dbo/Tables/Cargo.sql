@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Cargo] (
     [Id]          INT IDENTITY (1, 1) NOT NULL,
-    [Weight]      INT NOT NULL,
-    [Volume]      INT NOT NULL,
+    [Weight]      FLOAT NOT NULL,
+    [Volume]      FLOAT NOT NULL,
     [SenderId]    INT NOT NULL,
     [RecipientId] INT NOT NULL,
     [ShipmentId]  INT NULL,

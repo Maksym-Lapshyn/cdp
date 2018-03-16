@@ -33,8 +33,8 @@
         SUM(c.[Weight]) AS TotalWeight,
         SUM(c.Volume) AS TotalVolume,
         COUNT(c.Id) AS CargoCount,
-        dbo.CalculateUtilizedPercentage(v.TotalVolume, t.Volume) AS UtilizedCapacity,
-        dbo.CalculateUtilizedPercentage(w.TotalWeight, t.Payload) AS UtilizedPayload
+        v.TotalVolume / t.Volume * 100 AS UtilizedCapacity,
+        w.TotalWeight / t.Payload *100 AS UtilizedPayload
     FROM [dbo].[Shipment] AS s
     INNER JOIN [dbo].[Truck] AS t
     ON s.TruckId = t.Id
@@ -65,7 +65,5 @@
         d.City,
         d.[State],
         s.[Status],
-        c.[Weight],
-        c.Volume,
         v.TotalVolume,
         w.TotalWeight
