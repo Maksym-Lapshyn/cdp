@@ -1,0 +1,2 @@
+1) Task 4 vShipments view: c.[Weight], c.Volume, in group by give us wrong result 10k intead of 1k (Shipment count)
+2) Task 4 vShipments view: wrong results in UtilizedCapacity UtilizedPayload
