@@ -2,13 +2,12 @@
 using DAL.Mappers.Implementations;
 using DAL.Mappers.Interfaces;
 using DAL.Repositories.Interfaces;
+using DAL.SqlExpressionProviders.Implementations;
+using DAL.SqlExpressionProviders.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories.Implementations
 {
@@ -16,6 +15,7 @@ namespace DAL.Repositories.Implementations
     {
         private readonly SqlConnection _connection;
         private readonly IDataMapper<TEntity> _dataMapper;
+        private readonly ISqlExpressionProvider _expressionProvider;
 
         private readonly Type _entityType;
         private readonly string _tableName;
@@ -26,6 +26,7 @@ namespace DAL.Repositories.Implementations
             _connection = new SqlConnection(connectionString);
             _connection.Open();
             _dataMapper = new DataMapper<TEntity>();
+            _expressionProvider = new SqlExpressionProvider();
 
             _entityType = typeof(TEntity);
             _tableName = _entityType.Name;
@@ -38,29 +39,35 @@ namespace DAL.Repositories.Implementations
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var expression = _expressionProvider.ProvideDeleteAllExpression(_tableName, id);
+            var command = new SqlCommand(expression, _connection);
+            command.ExecuteNonQuery();
+
+            _connection.Close();
         }
 
         public IEnumerable<TEntity> ReadAll()
         {
-            var expression = $"SELECT * FROM [dbo].[{_tableName}];";
+            var expression = _expressionProvider.ProvideReadAllExpression(_tableName);
             var command = new SqlCommand(expression, _connection);
             var reader = command.ExecuteReader();
             var entities = _dataMapper.MapToEntityList(reader);
 
             reader.Close();
+            _connection.Close();
 
             return entities;
         }
 
         public TEntity ReadOne(int id)
         {
-            var expression = $"SELECT * FROM [dbo].[{_tableName}] WHERE Id = {id};";
+            var expression = _expressionProvider.ProvideReadOneExpression(_tableName, id);
             var command = new SqlCommand(expression, _connection);
             var reader = command.ExecuteReader();
             var entity = _dataMapper.MapToEntity(reader);
 
             reader.Close();
+            _connection.Close();
 
             return entity;
         }
@@ -68,27 +75,12 @@ namespace DAL.Repositories.Implementations
         public void Update(TEntity entity)
         {
             var properties = _dataMapper.MapToProperties(entity);
-            var sb = new StringBuilder();
-
-            sb.Append($"UPDATE [dbo].[{_tableName}] SET ");
-            
-            foreach (var property in properties)
-            {
-                if (property.Key == "Id")
-                {
-                    continue;
-                }
-
-                sb.Append($"{property.Key} = {property.Value}, ");
-            }
-
-            sb.Remove(sb.Length - 2, 1);
-            sb.Append($"WHERE Id = {entity.Id}");
-            sb.Append(";");
-
-            var expression = sb.ToString();
+            var expression = _expressionProvider.ProvideUpdateExpression(_tableName, entity.Id, properties);
             var command = new SqlCommand(expression, _connection);
+
             command.ExecuteNonQuery();
+
+            _connection.Close();
         }
     }
 }

@@ -14,11 +14,20 @@ namespace EntryPoint
         {
             var repository = new Repository<Cargo>();
 
-            var entity = repository.ReadOne(1);
-            var entities = repository.ReadAll();
+            //var entity = repository.ReadOne(1);
+            //var entities = repository.ReadAll();
 
-            var entity1 = new Cargo { Id = 1 };
-            repository.Update(entity1);
+            //var entity = new Cargo
+            //{
+            //    Id = 1,
+            //    Weight = 11111,
+            //    Volume = 42,
+            //    SenderId = 1,
+            //    RecipientId = 1,
+            //    ShipmentId = 855
+            //};
+
+            //repository.Update(entity);
         }
     }
 }
