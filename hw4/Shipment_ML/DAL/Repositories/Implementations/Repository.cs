@@ -6,6 +6,7 @@ using DAL.SqlExpressionProviders.Implementations;
 using DAL.SqlExpressionProviders.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -34,12 +35,34 @@ namespace DAL.Repositories.Implementations
 
         public TEntity Create(TEntity entity)
         {
-            throw new NotImplementedException();
+			var properties = _dataMapper.MapToProperties(entity);
+	        var expression = _expressionProvider.ProvideCreateExpression(_tableName, properties);
+	        var command = new SqlCommand(expression, _connection);
+
+	        var idParameter = new SqlParameter
+	        {
+		        ParameterName = "@id",
+		        SqlDbType = SqlDbType.Int,
+		        Direction = ParameterDirection.Output
+	        };
+
+	        command.Parameters.Add(idParameter);
+			command.ExecuteNonQuery();
+
+	        expression = _expressionProvider.ProvideReadOneExpression(_tableName, idParameter.Value);
+	        command = new SqlCommand(expression, _connection);
+	        var reader = command.ExecuteReader();
+	        entity = _dataMapper.MapToEntity(reader);
+
+	        reader.Close();
+	        _connection.Close();
+
+			return entity;
         }
 
         public void Delete(int id)
         {
-            var expression = _expressionProvider.ProvideDeleteAllExpression(_tableName, id);
+            var expression = _expressionProvider.ProvideDeleteExpression(_tableName, id);
             var command = new SqlCommand(expression, _connection);
             command.ExecuteNonQuery();
 

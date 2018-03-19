@@ -1,20 +1,50 @@
 ﻿using DAL.SqlExpressionProviders.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace DAL.SqlExpressionProviders.Implementations
 {
-    public class SqlExpressionProvider : ISqlExpressionProvider
+	public class SqlExpressionProvider : ISqlExpressionProvider
     {
-        public string ProvideCreateExpression(string tableName)
+        public string ProvideCreateExpression(string tableName, Dictionary<string, object> properties)
         {
-            throw new NotImplementedException();
+			var sb = new StringBuilder();
+	        sb.Append($"INSERT INTO [dbo].[{tableName}] (");
+
+			foreach (var property in properties)
+			{
+				if (property.Key == "Id")
+				{
+					continue;
+				}
+
+				sb.Append($"[{property.Key}], ");
+			}
+
+	        sb.Remove(sb.Length - 2, 2);
+	        sb.Append(") VALUES (");
+
+	        foreach (var property in properties)
+	        {
+		        if (property.Key == "Id")
+		        {
+			        continue;
+		        }
+
+		        sb.Append($"'{property.Value}', ");
+	        }
+
+	        sb.Remove(sb.Length - 2, 2);
+	        sb.Append("); SET @id=SCOPE_IDENTITY();");
+
+	        var expression = sb.ToString();
+
+	        return expression;
         }
 
-        public string ProvideDeleteAllExpression(string tableName, object id)
+        public string ProvideDeleteExpression(string tableName, object id)
         {
-            var expression = $"DELETE FROM FROM [dbo].[{tableName}] WHERE Id = {id};";
+            var expression = $"DELETE FROM FROM [dbo].[{tableName}] WHERE [Id] = {id};";
 
             return expression;
         }
@@ -28,7 +58,7 @@ namespace DAL.SqlExpressionProviders.Implementations
 
         public string ProvideReadOneExpression(string tableName, object id)
         {
-            var expression = $"SELECT * FROM [dbo].[{tableName}] WHERE Id = {id};";
+            var expression = $"SELECT * FROM [dbo].[{tableName}] WHERE [Id] = {id};";
 
             return expression;
         }
@@ -46,12 +76,11 @@ namespace DAL.SqlExpressionProviders.Implementations
                     continue;
                 }
 
-                sb.Append($"{property.Key} = '{property.Value}', ");
+                sb.Append($"[{property.Key}] = '{property.Value}', ");
             }
 
             sb.Remove(sb.Length - 2, 1);
-            sb.Append($"WHERE Id = {id}");
-            sb.Append(";");
+            sb.Append($"WHERE [Id] = {id};");
 
             var expression = sb.ToString();
 
