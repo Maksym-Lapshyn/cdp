@@ -1,9 +1,10 @@
-﻿using Core.Entities;
+﻿using System;
+using Core.Entities;
 using DAL.Repositories.Interfaces;
 
 namespace DAL.UnitOfWork.Interfaces
 {
-	public interface IUnitOfWork
+	public interface IUnitOfWork : IDisposable
 	{
 		IRepository<Route> RouteRepository { get; }
 

@@ -41,5 +41,11 @@ namespace DAL.UnitOfWork.Implementation
 		{
 			_transaction.Rollback();
 		}
+
+		public void Dispose()
+		{
+			_connection?.Dispose();
+			_transaction?.Dispose();
+		}
 	}
 }
