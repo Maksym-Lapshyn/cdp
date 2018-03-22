@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace DAL.Mappers.Implementations
 {
-    public class DataMapper<TEntity> : IDataMapper<TEntity> where TEntity : BaseEntity
+	public class DataMapper<TEntity> : IDataMapper<TEntity> where TEntity : BaseEntity
     {
         private readonly Type _entityType;
 
@@ -55,7 +55,7 @@ namespace DAL.Mappers.Implementations
                 entities.Add(entity);
             }
 
-            return entities as IEnumerable<TEntity>;
+            return entities;
         }
 
         public Dictionary<string, object> MapToProperties(TEntity entity)
@@ -64,9 +64,9 @@ namespace DAL.Mappers.Implementations
 
             var propertyDict = new Dictionary<string, object>(0);
 
-            for (var i = 0; i < properties.Length; i++)
+            foreach (var p in properties)
             {
-                propertyDict.Add(properties[i].Name, properties[i].GetValue(entity));
+	            propertyDict.Add(p.Name, p.GetValue(entity));
             }
 
             return propertyDict;

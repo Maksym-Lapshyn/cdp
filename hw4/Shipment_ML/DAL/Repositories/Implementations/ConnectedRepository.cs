@@ -23,7 +23,6 @@ namespace DAL.Repositories.Implementations
 	        _connection = connection;
             _dataMapper = new DataMapper<TEntity>();
             _expressionProvider = new SqlExpressionProvider();
-
             _tableName = typeof(TEntity).Name;
         }
 
