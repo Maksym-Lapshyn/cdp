@@ -7,6 +7,7 @@
     [DeliveryDate]  DATETIME NOT NULL,
     [ActualDistance] INT NULL, 
     [Status] INT NOT NULL DEFAULT 1 , 
+    [IsDeleted] BIT NOT NULL DEFAULT 0, 
     CONSTRAINT [pk_Shipment] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [fk_Shipment_Driver] FOREIGN KEY ([DriverId]) REFERENCES [dbo].[Driver] ([Id]),
     CONSTRAINT [fk_Shipment_Route] FOREIGN KEY ([RouteId]) REFERENCES [dbo].[Route] ([Id]),

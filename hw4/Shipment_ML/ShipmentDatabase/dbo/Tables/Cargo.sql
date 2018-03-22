@@ -5,6 +5,7 @@
     [SenderId]    INT NOT NULL,
     [RecipientId] INT NOT NULL,
     [ShipmentId]  INT NULL,
+    [IsDeleted] BIT NOT NULL DEFAULT 0, 
     CONSTRAINT [pk_Cargo] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [fk_Cargo_Recipient] FOREIGN KEY ([RecipientId]) REFERENCES [dbo].[ContactInformation] ([Id]),
     CONSTRAINT [fk_Cargo_Sender] FOREIGN KEY ([SenderId]) REFERENCES [dbo].[ContactInformation] ([Id]),

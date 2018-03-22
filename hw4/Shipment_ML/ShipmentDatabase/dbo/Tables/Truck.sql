@@ -7,6 +7,7 @@
     [FuelConsumption]    INT            NOT NULL,
     [Volume]             INT            NOT NULL,
     [Name]          NVARCHAR (100) NULL,
+    [IsDeleted] BIT NOT NULL DEFAULT 0, 
     CONSTRAINT [pk_Truck] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
