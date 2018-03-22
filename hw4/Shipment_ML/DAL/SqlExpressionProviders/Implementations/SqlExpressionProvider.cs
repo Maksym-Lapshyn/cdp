@@ -79,7 +79,7 @@ namespace DAL.SqlExpressionProviders.Implementations
                 sb.Append($"[{property.Key}] = '{property.Value}', ");
             }
 
-            sb.Remove(sb.Length - 2, 1);
+            sb.Remove(sb.Length - 2, 2);
             sb.Append($"WHERE [Id] = {id};");
 
             var expression = sb.ToString();

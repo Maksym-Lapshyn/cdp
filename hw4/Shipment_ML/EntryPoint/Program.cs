@@ -12,7 +12,7 @@ namespace EntryPoint
     {
         static void Main(string[] args)
         {
-            var repository = new Repository<Cargo>();
+            var repository = new ConnectedRepository<Cargo>();
 
 			//var entity = repository.ReadOne(1);
 			//var entities = repository.ReadAll();

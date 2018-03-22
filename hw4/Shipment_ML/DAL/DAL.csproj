@@ -43,10 +43,13 @@
     <Compile Include="Mappers\Implementations\DataMapper.cs" />
     <Compile Include="Mappers\Interfaces\IDataMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\Implementations\Repository.cs" />
+    <Compile Include="Repositories\Implementations\ConnectedRepository.cs" />
+    <Compile Include="Repositories\Implementations\DisconnectedRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRepository.cs" />
     <Compile Include="SqlExpressionProviders\Implementations\SqlExpressionProvider.cs" />
     <Compile Include="SqlExpressionProviders\Interfaces\ISqlExpressionProvider.cs" />
+    <Compile Include="UnitOfWork\Implementation\UnitOfWork.cs" />
+    <Compile Include="UnitOfWork\Interfaces\IUnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
