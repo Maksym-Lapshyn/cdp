@@ -1,4 +1,7 @@
-﻿using Core.Entities;
+﻿using System.Data.SqlClient;
+using Core.Entities;
+using DAL.Context;
+using DAL.Repositories.Implementations;
 using DAL.UnitOfWork.Implementation;
 
 namespace EntryPoint
@@ -7,19 +10,10 @@ namespace EntryPoint
     {
         static void Main(string[] args)
         {
-	        var uow = new UnitOfWork();
-
-			uow.BeginTransaction();
-
-	        var warehouse = new Warehouse
-	        {
-		        City = "Utah",
-				State = "Jazz"
-	        };
-
-	        warehouse = uow.WarehouseRepository.Create(warehouse);
-
-			uow.CommitTransaction();
+	        var connectionString = "Data Source=.;Integrated Security=True;Initial Catalog=Shipment_ML;";
+			var context = new DisconnectedContext(connectionString);
+	        var tables = context.DataSet.Tables;
         }
 	}
 }
+^

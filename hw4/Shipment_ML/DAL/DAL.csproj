@@ -40,15 +40,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\DisconnectedContext.cs" />
+    <Compile Include="DataPopulators\Implementations\DataSetPopulator.cs" />
+    <Compile Include="DataPopulators\Interfaces\IDataSetPopulator.cs" />
     <Compile Include="Mappers\Implementations\DataMapper.cs" />
     <Compile Include="Mappers\Interfaces\IDataMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Implementations\ConnectedRepository.cs" />
     <Compile Include="Repositories\Implementations\DisconnectedRepository.cs" />
+    <Compile Include="Repositories\Interfaces\IDisconnectedRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRepository.cs" />
     <Compile Include="SqlExpressionProviders\Implementations\SqlExpressionProvider.cs" />
     <Compile Include="SqlExpressionProviders\Interfaces\ISqlExpressionProvider.cs" />
+    <Compile Include="TableRowPopulators\TableRowPopulator.cs" />
+    <Compile Include="UnitOfWork\Interfaces\IDisconnectedUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Implementation\UnitOfWork.cs" />
+    <Compile Include="UnitOfWork\Implementation\DisconnectedUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Interfaces\IUnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

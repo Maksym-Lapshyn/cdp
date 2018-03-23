@@ -44,7 +44,7 @@ namespace DAL.SqlExpressionProviders.Implementations
 
         public string ProvideDeleteExpression(string tableName, object id)
         {
-            var expression = $"UPDATE [dbo].[{tableName}] SET IsDeleted = 1 WHERE [Id] = {id};";
+            var expression = $"DELETE FROM [dbo].[{tableName}] WHERE [Id] = {id};";
 
             return expression;
         }
