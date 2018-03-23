@@ -13,14 +13,16 @@ namespace DAL.Repositories.Implementations
 	public class ConnectedRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
         private readonly SqlConnection _connection;
+	    private readonly SqlTransaction _transaction;
         private readonly IDataMapper<TEntity> _dataMapper;
         private readonly ISqlExpressionProvider _expressionProvider;
 
         private readonly string _tableName;
 
-        public ConnectedRepository(SqlConnection connection)
+        public ConnectedRepository(SqlConnection connection, SqlTransaction transaction)
         {
 	        _connection = connection;
+	        _transaction = transaction;
             _dataMapper = new DataMapper<TEntity>();
             _expressionProvider = new SqlExpressionProvider();
             _tableName = typeof(TEntity).Name;
@@ -31,9 +33,10 @@ namespace DAL.Repositories.Implementations
 			var properties = _dataMapper.MapToProperties(entity);
 	        var expression = _expressionProvider.ProvideCreateExpression(_tableName, properties);
 
-	        _connection.Open();
-
-			var command = new SqlCommand(expression, _connection);
+	        var command = new SqlCommand(expression, _connection)
+	        {
+		        Transaction = _transaction
+	        };
 
 	        var idParameter = new SqlParameter
 	        {
@@ -46,12 +49,16 @@ namespace DAL.Repositories.Implementations
 			command.ExecuteNonQuery();
 
 	        expression = _expressionProvider.ProvideReadOneExpression(_tableName, idParameter.Value);
-	        command = new SqlCommand(expression, _connection);
+
+	        command = new SqlCommand(expression, _connection)
+	        {
+		        Transaction = _transaction
+	        };
+
 	        var reader = command.ExecuteReader();
 	        entity = _dataMapper.MapToEntity(reader);
 
 	        reader.Close();
-	        _connection.Close();
 
 			return entity;
         }
@@ -60,26 +67,27 @@ namespace DAL.Repositories.Implementations
         {
             var expression = _expressionProvider.ProvideDeleteExpression(_tableName, id);
 
-	        _connection.Open();
-
-			var command = new SqlCommand(expression, _connection);
+	        var command = new SqlCommand(expression, _connection)
+	        {
+		        Transaction = _transaction
+	        };
 
             command.ExecuteNonQuery();
-            _connection.Close();
         }
 
         public IEnumerable<TEntity> ReadAll()
         {
             var expression = _expressionProvider.ProvideReadAllExpression(_tableName);
 
-	        _connection.Open();
+	        var command = new SqlCommand(expression, _connection)
+	        {
+		        Transaction = _transaction
+	        };
 
-			var command = new SqlCommand(expression, _connection);
             var reader = command.ExecuteReader();
             var entities = _dataMapper.MapToEntityList(reader);
 
             reader.Close();
-            _connection.Close();
 
             return entities;
         }
@@ -88,14 +96,15 @@ namespace DAL.Repositories.Implementations
         {
             var expression = _expressionProvider.ProvideReadOneExpression(_tableName, id);
 
-	        _connection.Open();
+	        var command = new SqlCommand(expression, _connection)
+	        {
+		        Transaction = _transaction
+	        };
 
-			var command = new SqlCommand(expression, _connection);
             var reader = command.ExecuteReader();
             var entity = _dataMapper.MapToEntity(reader);
 
             reader.Close();
-            _connection.Close();
 
             return entity;
         }
@@ -105,12 +114,12 @@ namespace DAL.Repositories.Implementations
             var properties = _dataMapper.MapToProperties(entity);
             var expression = _expressionProvider.ProvideUpdateExpression(_tableName, entity.Id, properties);
 
-	        _connection.Open();
-
-			var command = new SqlCommand(expression, _connection);
+	        var command = new SqlCommand(expression, _connection)
+	        {
+		        Transaction = _transaction
+	        };
 
             command.ExecuteNonQuery();
-            _connection.Close();
         }
     }
 }

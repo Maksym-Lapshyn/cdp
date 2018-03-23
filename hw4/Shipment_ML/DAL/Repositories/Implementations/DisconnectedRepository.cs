@@ -41,6 +41,7 @@ namespace DAL.Repositories.Implementations
 
 			var dataTable = dataSet.Tables[0];
 
+			throw new NotImplementedException();
 		}
 
 		public TEntity ReadOne(int id)

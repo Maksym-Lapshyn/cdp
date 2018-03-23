@@ -1,35 +1,25 @@
 ﻿using Core.Entities;
-using DAL.Repositories.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DAL.UnitOfWork.Implementation;
 
 namespace EntryPoint
 {
-    class Program
+	class Program
     {
         static void Main(string[] args)
         {
-            var repository = new ConnectedRepository<Cargo>();
+	        var uow = new UnitOfWork();
 
-			//var entity = repository.ReadOne(1);
-			//var entities = repository.ReadAll();
+			uow.BeginTransaction();
 
-			var entity = new Cargo
-			{
-				Id = 1,
-				Weight = 55555,
-				Volume = 55555,
-				SenderId = 1,
-				RecipientId = 1,
-				ShipmentId = 855
-			};
+	        var warehouse = new Warehouse
+	        {
+		        City = "Utah",
+				State = "Jazz"
+	        };
 
-	        repository.Create(entity);
+	        warehouse = uow.WarehouseRepository.Create(warehouse);
 
-	        //repository.Update(entity);
+			uow.CommitTransaction();
         }
 	}
 }
