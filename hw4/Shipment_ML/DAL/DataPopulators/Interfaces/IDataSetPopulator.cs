@@ -5,6 +5,6 @@ namespace DAL.DataPopulators.Interfaces
 {
 	public interface IDataSetPopulator
 	{
-		void PopulateDataSet(DataSet dataSet, SqlDataAdapter dataAdapter, string[] tableNames);
+		void PopulateDataSet(DataSet dataSet, SqlDataAdapter dataAdapter, SqlConnection connection, string[] tableNames);
 	}
 }

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL.DataPopulators.Interfaces;
+﻿using DAL.DataPopulators.Interfaces;
 using DAL.SqlExpressionProviders.Implementations;
 using DAL.SqlExpressionProviders.Interfaces;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace DAL.DataPopulators.Implementations
 {
-	public class DataSetPopulator : IDataSetPopulator
+    public class DataSetPopulator : IDataSetPopulator
 	{
 		private readonly ISqlExpressionProvider _expressionProvider;
 
@@ -20,9 +15,22 @@ namespace DAL.DataPopulators.Implementations
 			_expressionProvider = new SqlExpressionProvider();
 		}
 
-		public void PopulateDataSet(DataSet dataSet, SqlDataAdapter dataAdapter, string[] tableNames)
+		public void PopulateDataSet(DataSet dataSet, SqlDataAdapter dataAdapter, SqlConnection connection, string[] tableNames)
 		{
-			throw new NotImplementedException();
-		}
+            foreach (var tableName in tableNames)
+            {
+                var expression = _expressionProvider.ProvideReadAllExpression(tableName);
+
+                var sqlCommand = new SqlCommand
+                {
+                    CommandText = expression,
+                    Connection = connection
+                };
+
+                dataAdapter.SelectCommand = sqlCommand;
+
+                dataAdapter.Fill(dataSet, tableName);
+            }
+        }
 	}
 }

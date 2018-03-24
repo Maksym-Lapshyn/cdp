@@ -7,24 +7,25 @@ using DAL.SqlExpressionProviders.Implementations;
 using DAL.SqlExpressionProviders.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace DAL.Repositories.Implementations
 {
-	public class DisconnectedRepository<TEntity> : IDisconnectedRepository<TEntity> where TEntity : BaseEntity
+    public class DisconnectedRepository<TEntity> : IDisconnectedRepository<TEntity> where TEntity : BaseEntity
 	{
 		private readonly DisconnectedContext _context;
-		private readonly IDataMapper<TEntity> _dataMapper;
+        private readonly string _tableName;
+        private readonly DataTable _table;
+        private readonly IDataMapper<TEntity> _dataMapper;
 		private readonly ISqlExpressionProvider _expressionProvider;
-
-		private readonly string _tableName;
 
 		public DisconnectedRepository(DisconnectedContext context)
 		{
 			_context = context;
-			_dataMapper = new DataMapper<TEntity>();
+            _tableName = typeof(TEntity).Name;
+            _table = _context.DataSet.Tables[_tableName];
+            _dataMapper = new DataMapper<TEntity>();
 			_expressionProvider = new SqlExpressionProvider();
-
-			_tableName = typeof(TEntity).Name;
 		}
 
 		public void Create(TEntity entity)
@@ -34,15 +35,33 @@ namespace DAL.Repositories.Implementations
 
 		public TEntity ReadOne(int id)
 		{
-			throw new NotImplementedException();
+            var whereExpression = _expressionProvider.ProvideFilteringExpression(id);
+            var rows = _table.Select(whereExpression);
+            DataRow row = default(DataRow);
+
+            foreach (var r in rows)
+            {
+                if (r.Field<int>("Id") == id)
+                {
+                    row = r;
+                    break;
+                }
+            }
+
+            var entity = _dataMapper.MapToEntity(row);
+
+            return entity;
 		}
 
 		public IEnumerable<TEntity> ReadAll()
 		{
-			throw new NotImplementedException();
-		}
+            var rows = _table.Select();
+            var entities = _dataMapper.MapToEntityList(rows);
 
-		public void Update(TEntity entity)
+            return entities;
+        }
+
+        public void Update(TEntity entity)
 		{
 			throw new NotImplementedException();
 		}

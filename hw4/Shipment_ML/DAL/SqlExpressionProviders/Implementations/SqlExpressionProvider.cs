@@ -86,5 +86,12 @@ namespace DAL.SqlExpressionProviders.Implementations
 
             return expression;
         }
+
+        public string ProvideFilteringExpression(object id)
+        {
+            var expression = $"Id = {id}";
+
+            return expression;
+        }
     }
 }

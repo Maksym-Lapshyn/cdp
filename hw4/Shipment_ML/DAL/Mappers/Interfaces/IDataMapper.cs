@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace DAL.Mappers.Interfaces
@@ -8,8 +9,13 @@ namespace DAL.Mappers.Interfaces
     {
         TEntity MapToEntity(SqlDataReader reader);
 
+        TEntity MapToEntity(DataRow row);
+
         IEnumerable<TEntity> MapToEntityList(SqlDataReader reader);
 
+        IEnumerable<TEntity> MapToEntityList(DataRow[] rows);
+
         Dictionary<string, object> MapToProperties(TEntity entity);
+
     }
 }

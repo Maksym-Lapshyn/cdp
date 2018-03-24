@@ -2,7 +2,9 @@
 using DAL.Mappers.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace DAL.Mappers.Implementations
 {
@@ -34,6 +36,21 @@ namespace DAL.Mappers.Implementations
             return entity as TEntity;
         }
 
+        public TEntity MapToEntity(DataRow row)
+        {
+            var properties = _entityType.GetProperties();
+            var entity = Activator.CreateInstance(_entityType);
+
+            foreach (var property in properties)
+            {
+                var value = row[property.Name];
+
+                property.SetValue(entity, value);
+            }
+
+            return entity as TEntity;
+        }
+
         public IEnumerable<TEntity> MapToEntityList(SqlDataReader reader)
         {
             CheckIfReaderHasRows(reader);
@@ -50,6 +67,28 @@ namespace DAL.Mappers.Implementations
                     var propertyInfo = _entityType.GetProperty(reader.GetName(i));
 
                     propertyInfo.SetValue(entity, reader.GetValue(i));
+                }
+
+                entities.Add(entity);
+            }
+
+            return entities;
+        }
+
+        public IEnumerable<TEntity> MapToEntityList(DataRow[] rows)
+        {
+            var properties = _entityType.GetProperties();
+            var entities = new List<TEntity>();
+
+            foreach (var row in rows)
+            {
+                var entity = Activator.CreateInstance(_entityType) as TEntity;
+
+                foreach (var property in properties)
+                {
+                    var value = row[property.Name];
+
+                    property.SetValue(entity, value);
                 }
 
                 entities.Add(entity);

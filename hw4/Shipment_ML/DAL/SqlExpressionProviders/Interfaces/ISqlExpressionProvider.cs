@@ -13,5 +13,7 @@ namespace DAL.SqlExpressionProviders.Interfaces
         string ProvideUpdateExpression(string tableName, object id, Dictionary<string, object> properties);
 
         string ProvideDeleteExpression(string tableName, object id);
+
+        string ProvideFilteringExpression(object id);
     }
 }

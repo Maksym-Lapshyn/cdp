@@ -1,29 +1,26 @@
-﻿using System.Data;
+﻿using DAL.DataPopulators.Implementations;
+using DAL.DataPopulators.Interfaces;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace DAL.Context
 {
-	public class DisconnectedContext
+    public class DisconnectedContext
 	{
 		private readonly DataSet _dataSet;
 		private readonly SqlDataAdapter _dataAdapter;
 		private readonly SqlConnection _connection;
+        private readonly IDataSetPopulator _dataSetPopulator;
 
-		public DisconnectedContext(string connectionString)
+		public DisconnectedContext(string connectionString, string[] tableNames)
 		{
 			_connection = new SqlConnection(connectionString);
 			_dataAdapter = new SqlDataAdapter();
-
-			var command = new SqlCommand
-			{
-				CommandText = "SELECT * FROM [dbo].[Route]; SELECT * FROM [dbo].[Warehouse];",
-				Connection = new SqlConnection(connectionString)
-			};
+            _dataSetPopulator = new DataSetPopulator();
 
 			_dataSet = new DataSet();
-			_dataAdapter.SelectCommand = command;
 			_connection.Open();
-			_dataAdapter.Fill(_dataSet);
+            _dataSetPopulator.PopulateDataSet(_dataSet, _dataAdapter, _connection, tableNames);
 			_connection.Close();
 		}
 
