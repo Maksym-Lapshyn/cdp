@@ -111,6 +111,18 @@ namespace DAL.Mappers.Implementations
             return propertyDict;
         }
 
+        public DataRow MapToDataRow(TEntity entity, DataRow row)
+        {
+            var properties = _entityType.GetProperties();
+
+            foreach (var p in properties)
+            {
+                row[p.Name] = p.GetValue(entity);
+            }
+
+            return row;
+        }
+
         private void CheckIfReaderHasRows(SqlDataReader reader)
         {
             if (!reader.HasRows)

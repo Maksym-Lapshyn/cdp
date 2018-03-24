@@ -17,5 +17,6 @@ namespace DAL.Mappers.Interfaces
 
         Dictionary<string, object> MapToProperties(TEntity entity);
 
+        DataRow MapToDataRow(TEntity entity, DataRow row);
     }
 }

@@ -26,6 +26,11 @@ namespace DAL.UnitOfWork.Implementation
 		public IDisconnectedRepository<Route> RouteRepository => _lazyRouteRepository.Value;
 		public IDisconnectedRepository<Warehouse> WarehouseRepository => _lazyWarehouseRepository.Value;
 
+        public void LoadEntities()
+        {
+            _context.LoadContext();
+        }
+
 		public void SaveChanges()
 		{
 			_context.SaveChanges();

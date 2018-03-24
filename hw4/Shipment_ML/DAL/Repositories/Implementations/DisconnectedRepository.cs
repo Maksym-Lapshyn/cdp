@@ -5,7 +5,6 @@ using DAL.Mappers.Interfaces;
 using DAL.Repositories.Interfaces;
 using DAL.SqlExpressionProviders.Implementations;
 using DAL.SqlExpressionProviders.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -30,24 +29,15 @@ namespace DAL.Repositories.Implementations
 
 		public void Create(TEntity entity)
 		{
-			throw new NotImplementedException();
+            var row = _table.NewRow();
+            row = _dataMapper.MapToDataRow(entity, row);
+
+            _table.Rows.Add(row);
 		}
 
 		public TEntity ReadOne(int id)
 		{
-            var whereExpression = _expressionProvider.ProvideFilteringExpression(id);
-            var rows = _table.Select(whereExpression);
-            DataRow row = default(DataRow);
-
-            foreach (var r in rows)
-            {
-                if (r.Field<int>("Id") == id)
-                {
-                    row = r;
-                    break;
-                }
-            }
-
+            var row = GetDataRowById(id);
             var entity = _dataMapper.MapToEntity(row);
 
             return entity;
@@ -63,12 +53,33 @@ namespace DAL.Repositories.Implementations
 
         public void Update(TEntity entity)
 		{
-			throw new NotImplementedException();
-		}
+            var row = GetDataRowById(entity.Id);
+            row = _dataMapper.MapToDataRow(entity, row);
+        }
 
 		public void Delete(int id)
 		{
-			throw new NotImplementedException();
+            var row = GetDataRowById(id);
+
+            _table.Rows.Remove(row);
 		}
+
+        private DataRow GetDataRowById(int id)
+        {
+            var whereExpression = _expressionProvider.ProvideFilteringExpression(id);
+            var rows = _table.Select(whereExpression);
+            var row = default(DataRow);
+
+            foreach (var r in rows)
+            {
+                if (r.Field<int>("Id") == id)
+                {
+                    row = r;
+                    break;
+                }
+            }
+
+            return row;
+        }
 	}
 }
