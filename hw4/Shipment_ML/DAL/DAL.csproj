@@ -52,7 +52,6 @@
     <Compile Include="Repositories\Interfaces\IRepository.cs" />
     <Compile Include="SqlExpressionProviders\Implementations\SqlExpressionProvider.cs" />
     <Compile Include="SqlExpressionProviders\Interfaces\ISqlExpressionProvider.cs" />
-    <Compile Include="TableRowPopulators\TableRowPopulator.cs" />
     <Compile Include="UnitOfWork\Interfaces\IDisconnectedUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Implementation\UnitOfWork.cs" />
     <Compile Include="UnitOfWork\Implementation\DisconnectedUnitOfWork.cs" />
