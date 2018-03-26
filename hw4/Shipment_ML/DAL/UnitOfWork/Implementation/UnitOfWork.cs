@@ -3,6 +3,7 @@ using DAL.Repositories.Implementations;
 using DAL.Repositories.Interfaces;
 using DAL.UnitOfWork.Interfaces;
 using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace DAL.UnitOfWork.Implementation
@@ -26,10 +27,10 @@ namespace DAL.UnitOfWork.Implementation
 		public IRepository<Route> RouteRepository => _lazyRouteRepository.Value;
 		public IRepository<Warehouse> WarehouseRepository => _lazyWarehouseRepository.Value;
 
-		public void BeginTransaction()
+		public void BeginTransaction(IsolationLevel isolationLevel)
 		{
 			_connection.Open();
-			_transaction = _connection.BeginTransaction();
+			_transaction = _connection.BeginTransaction(isolationLevel);
 		}
 
 		public void CommitTransaction()

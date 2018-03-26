@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using DAL.Repositories.Interfaces;
+using System.Data;
 
 namespace DAL.UnitOfWork.Interfaces
 {
@@ -9,7 +10,7 @@ namespace DAL.UnitOfWork.Interfaces
 
 		IRepository<Warehouse> WarehouseRepository { get; }
 
-		void BeginTransaction();
+		void BeginTransaction(IsolationLevel isolationLevel);
 
 		void CommitTransaction();
 
