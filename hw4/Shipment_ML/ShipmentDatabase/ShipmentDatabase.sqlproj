@@ -85,6 +85,7 @@
     <Build Include="dbo\Tables\ShipmentStatus.sql" />
     <Build Include="dbo\Views\vShipments.sql" />
     <Build Include="dbo\Functions\CalculateUtilizedPercentage.sql" />
+    <Build Include="dbo\Stored Procedures\GetRowCount.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
