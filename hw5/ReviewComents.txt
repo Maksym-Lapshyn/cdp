@@ -1,0 +1,4 @@
++ 1) Why everything in scope of HW4?
++ 2) Connection string should be in *.config and not hardcoded in repo
+3) There is no way in your generic repo to add additional where clause to filter on SQL level
+4) It's possible to do sql inections using your repo which does not use sql parameters.
