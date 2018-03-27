@@ -45,7 +45,7 @@ namespace Tests.DAL
 		[Fact]
 		public void Uow_CreatesAndReadsRoutesAndWarehouses()
 		{
-			var uow = new UnitOfWork();
+			var firstUow = new UnitOfWork();
 
 			var origin = new Warehouse
 			{
@@ -59,10 +59,10 @@ namespace Tests.DAL
 				State = "New Jersey"
 			};
 
-			uow.BeginTransaction(IsolationLevel.ReadUncommitted);
+			firstUow.BeginTransaction(IsolationLevel.ReadUncommitted);
 
-			origin = uow.WarehouseRepository.Create(origin);
-			destination = uow.WarehouseRepository.Create(destination);
+			origin = firstUow.WarehouseRepository.Create(origin);
+			destination = firstUow.WarehouseRepository.Create(destination);
 
 			var route = new Route
 			{
@@ -71,16 +71,20 @@ namespace Tests.DAL
 				Distance = 1000
 			};
 
-			route = uow.RouteRepository.Create(route);
+			route = firstUow.RouteRepository.Create(route);
+			var secondUow = new UnitOfWork();
 
-			var routeFromDatabase = uow.RouteRepository.ReadOne(route.Id);
+			secondUow.BeginTransaction(IsolationLevel.ReadUncommitted);
+
+			var routeFromDatabase = secondUow.RouteRepository.ReadOne(route.Id);
 
 			Assert.Equal(route.Id, routeFromDatabase.Id);
 			Assert.Equal(origin.Id, routeFromDatabase.OriginId);
 			Assert.Equal(route.Distance, routeFromDatabase.Distance);
 			Assert.Equal(destination.Id, routeFromDatabase.DestinationId);
 
-			uow.RollbackTransaction();
+			secondUow.RollbackTransaction();
+			firstUow.RollbackTransaction();
 		}
 
 		private SqlCommand GetSqlCommand(string tableName)
