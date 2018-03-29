@@ -6,43 +6,29 @@ namespace DAL.SqlExpressionProviders.Implementations
 {
 	public class SqlExpressionProvider : ISqlExpressionProvider
     {
-        public string ProvideCreateExpression(string tableName, Dictionary<string, object> properties)
+        public string ProvideCreateExpressionWithSetIdentity(string tableName, Dictionary<string, object> properties)
         {
-			var sb = new StringBuilder();
-	        sb.Append($"INSERT INTO [dbo].[{tableName}] (");
+	        var sb = ProvideCreateExpression(tableName, properties);
 
-			foreach (var property in properties)
-			{
-				if (property.Key == "Id")
-				{
-					continue;
-				}
-
-				sb.Append($"[{property.Key}], ");
-			}
-
-	        sb.Remove(sb.Length - 2, 2);
-	        sb.Append(") VALUES (");
-
-	        foreach (var property in properties)
-	        {
-		        if (property.Key == "Id")
-		        {
-			        continue;
-		        }
-
-		        sb.Append($"'{property.Value}', ");
-	        }
-
-	        sb.Remove(sb.Length - 2, 2);
-	        sb.Append("); SET @id=SCOPE_IDENTITY();");
+	        sb.Append("SET @id=SCOPE_IDENTITY();");
 
 	        var expression = sb.ToString();
 
 	        return expression;
         }
 
-        public string ProvideDeleteExpression(string tableName, object id)
+	    public string ProvideCreateExpressionWithSelectIdentity(string tableName, Dictionary<string, object> properties)
+	    {
+		    var sb = ProvideCreateExpression(tableName, properties);
+
+			sb.Append("SELECT CAST(SCOPE_IDENTITY() as INT);");
+
+		    var expression = sb.ToString();
+
+		    return expression;
+		}
+
+	    public string ProvideDeleteExpression(string tableName, object id)
         {
             var expression = $"DELETE FROM [dbo].[{tableName}] WHERE [Id] = {id};";
 
@@ -93,5 +79,39 @@ namespace DAL.SqlExpressionProviders.Implementations
 
             return expression;
         }
+
+	    private StringBuilder ProvideCreateExpression(string tableName, Dictionary<string, object> properties)
+	    {
+			var sb = new StringBuilder();
+		    sb.Append($"INSERT INTO [dbo].[{tableName}] (");
+
+		    foreach (var property in properties)
+		    {
+			    if (property.Key == "Id")
+			    {
+				    continue;
+			    }
+
+			    sb.Append($"[{property.Key}], ");
+		    }
+
+		    sb.Remove(sb.Length - 2, 2);
+		    sb.Append(") VALUES (");
+
+		    foreach (var property in properties)
+		    {
+			    if (property.Key == "Id")
+			    {
+				    continue;
+			    }
+
+			    sb.Append($"'{property.Value}', ");
+		    }
+
+		    sb.Remove(sb.Length - 2, 2);
+		    sb.Append(");");
+
+		    return sb;
+	    }
     }
 }

@@ -1,17 +1,13 @@
 ﻿using Core.Entities;
-using DAL.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Reflection;
-using Dapper;
 using DAL.Mappers.Implementations;
 using DAL.Mappers.Interfaces;
+using DAL.Repositories.Interfaces;
 using DAL.SqlExpressionProviders.Implementations;
 using DAL.SqlExpressionProviders.Interfaces;
+using Dapper;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 
 namespace DAL.Repositories.Implementations
 {
@@ -35,11 +31,13 @@ namespace DAL.Repositories.Implementations
 
 		public TEntity Create(TEntity entity)
 		{
-			//var properties = _dataMapper.MapToProperties(entity);
-			//var expression = _expressionProvider.ProvideCreateExpression(_tableName, properties);
-			//_connection.Execute(new CommandDefinition)
+			var properties = _dataMapper.MapToProperties(entity);
+			var expression = _expressionProvider.ProvideCreateExpressionWithSelectIdentity(_tableName, properties);
+			var id = _connection.Query<int>(expression, entity, _transaction).Single();
+			expression = _expressionProvider.ProvideReadOneExpression(_tableName, id);
+			entity = _connection.QueryFirstOrDefault<TEntity>(expression, null, _transaction);
 
-			throw new NotImplementedException();
+			return entity;
 		}
 
 		public TEntity ReadOne(int id)
@@ -60,7 +58,10 @@ namespace DAL.Repositories.Implementations
 
 		public void Update(TEntity entity)
 		{
-			throw new NotImplementedException();
+			var properties = _dataMapper.MapToProperties(entity);
+			var expression = _expressionProvider.ProvideUpdateExpression(_tableName, entity.Id, properties);
+
+			_connection.Execute(expression, entity, _transaction);
 		}
 
 		public void Delete(int id)

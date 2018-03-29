@@ -9,7 +9,15 @@ namespace EntryPoint
         static void Main(string[] args)
         {
             var uow = new UnitOfWork();
-	        var route = uow.RouteRepository.ReadOne(6);
+	        var route = new Route
+	        {
+		        DestinationId = 1,
+		        Distance = 1,
+		        OriginId = 1,
+				Id = 20
+	        };
+
+	        uow.RouteRepository.Update(route);
         }
 	}
 }

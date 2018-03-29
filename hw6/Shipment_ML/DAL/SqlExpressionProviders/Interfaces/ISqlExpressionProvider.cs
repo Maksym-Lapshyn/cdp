@@ -4,9 +4,11 @@ namespace DAL.SqlExpressionProviders.Interfaces
 {
     public interface ISqlExpressionProvider
     {
-        string ProvideCreateExpression(string tableName, Dictionary<string, object> properties);
+        string ProvideCreateExpressionWithSetIdentity(string tableName, Dictionary<string, object> properties);
 
-        string ProvideReadOneExpression(string tableName, object id);
+	    string ProvideCreateExpressionWithSelectIdentity(string tableName, Dictionary<string, object> properties);
+
+		string ProvideReadOneExpression(string tableName, object id);
 
         string ProvideReadAllExpression(string tableName);
 

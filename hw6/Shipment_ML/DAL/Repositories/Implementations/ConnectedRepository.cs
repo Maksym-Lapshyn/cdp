@@ -31,7 +31,7 @@ namespace DAL.Repositories.Implementations
         public TEntity Create(TEntity entity)
         {
 			var properties = _dataMapper.MapToProperties(entity);
-	        var expression = _expressionProvider.ProvideCreateExpression(_tableName, properties);
+	        var expression = _expressionProvider.ProvideCreateExpressionWithSetIdentity(_tableName, properties);
 
 	        var command = new SqlCommand(expression, _connection)
 	        {
