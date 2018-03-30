@@ -67,6 +67,7 @@ namespace DAL.Repositories.Implementations
 		public void Delete(int id)
 		{
 			var expression = _expressionProvider.ProvideDeleteExpression(_tableName, id);
+
 			_connection.Execute(expression, null, _transaction);
 		}
 	}

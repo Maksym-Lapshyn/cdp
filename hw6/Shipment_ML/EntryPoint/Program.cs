@@ -1,5 +1,6 @@
-﻿using Core.Entities;
+﻿using System.Data;
 using DAL.Context;
+using DAL.Repositories.Implementations;
 using DAL.UnitOfWork.Implementation;
 
 namespace EntryPoint
@@ -8,16 +9,10 @@ namespace EntryPoint
     {
         static void Main(string[] args)
         {
-            var uow = new UnitOfWork();
-	        var route = new Route
-	        {
-		        DestinationId = 1,
-		        Distance = 1,
-		        OriginId = 1,
-				Id = 20
-	        };
-
-	        uow.RouteRepository.Update(route);
+	        var uow = new UnitOfWork();
+			uow.BeginTransaction(IsolationLevel.ReadUncommitted);
+	        var route = uow.RouteRepository.ReadOne(10);
+			uow.CommitTransaction();
         }
 	}
 }
