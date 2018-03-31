@@ -1,9 +1,17 @@
-﻿namespace Core.Entities
-{
-	public class Warehouse : BaseEntity
-	{
-		public string City { get; set; }
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-		public string State { get; set; }
-	}
+namespace Core.Entities
+{
+    [Table("Warehouse")]
+    public class Warehouse : BaseEntity
+    {
+        [Required]
+        [StringLength(50)]
+        public string City { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string State { get; set; }
+    }
 }

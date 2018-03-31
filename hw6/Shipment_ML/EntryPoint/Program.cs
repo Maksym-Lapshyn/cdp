@@ -1,7 +1,5 @@
-﻿using System.Data;
-using DAL.Context;
-using DAL.Repositories.Implementations;
-using DAL.UnitOfWork.Implementation;
+﻿using DAL.UnitOfWork.Implementation;
+using System.Data;
 
 namespace EntryPoint
 {
@@ -9,10 +7,8 @@ namespace EntryPoint
     {
         static void Main(string[] args)
         {
-	        var uow = new UnitOfWork();
-			uow.BeginTransaction(IsolationLevel.ReadUncommitted);
+	        var uow = new EfUnitOfWork();
 	        var route = uow.RouteRepository.ReadOne(10);
-			uow.CommitTransaction();
         }
 	}
 }

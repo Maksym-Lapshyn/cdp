@@ -1,11 +1,14 @@
-﻿namespace Core.Entities
-{
-	public class Route : BaseEntity
-	{
-		public int OriginId { get; set; }
-		
-		public int DestinationId { get; set; }
+using System.ComponentModel.DataAnnotations.Schema;
 
-		public int Distance { get; set; }
-	}
+namespace Core.Entities
+{
+	[Table("Route")]
+    public class Route : BaseEntity
+    {
+        public int? OriginId { get; set; }
+
+        public int? DestinationId { get; set; }
+
+        public int Distance { get; set; }
+    }
 }

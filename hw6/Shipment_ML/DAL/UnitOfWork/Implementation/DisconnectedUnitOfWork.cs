@@ -6,11 +6,11 @@ using System;
 
 namespace DAL.UnitOfWork.Implementation
 {
-    public class DisconnectedUnitOfWork : IDisconnectedUnitOfWork
+    public class DisconnectedUnitOfWork : IRepositoryFacade, IDisconnectedUnitOfWork
 	{
 		private readonly Context.DisconnectedContext _context;
-		private readonly Lazy<IDisconnectedRepository<Route>> _lazyRouteRepository;
-		private readonly Lazy<IDisconnectedRepository<Warehouse>> _lazyWarehouseRepository;
+		private readonly Lazy<IRepository<Route>> _lazyRouteRepository;
+		private readonly Lazy<IRepository<Warehouse>> _lazyWarehouseRepository;
 
 		public DisconnectedUnitOfWork()
 		{
@@ -18,12 +18,12 @@ namespace DAL.UnitOfWork.Implementation
             var connectionString = "Data Source=.;Integrated Security=True;Initial Catalog=Shipment_ML;";
 			_context = new Context.DisconnectedContext(connectionString, tableNames);
 
-			_lazyWarehouseRepository = new Lazy<IDisconnectedRepository<Warehouse>>(() => new DisconnectedRepository<Warehouse>(_context));
-			_lazyRouteRepository = new Lazy<IDisconnectedRepository<Route>>(() => new DisconnectedRepository<Route>(_context));
+			_lazyWarehouseRepository = new Lazy<IRepository<Warehouse>>(() => new DisconnectedRepository<Warehouse>(_context));
+			_lazyRouteRepository = new Lazy<IRepository<Route>>(() => new DisconnectedRepository<Route>(_context));
 		}
 
-		public IDisconnectedRepository<Route> RouteRepository => _lazyRouteRepository.Value;
-		public IDisconnectedRepository<Warehouse> WarehouseRepository => _lazyWarehouseRepository.Value;
+		public IRepository<Route> RouteRepository => _lazyRouteRepository.Value;
+		public IRepository<Warehouse> WarehouseRepository => _lazyWarehouseRepository.Value;
 
         public void LoadEntities()
         {

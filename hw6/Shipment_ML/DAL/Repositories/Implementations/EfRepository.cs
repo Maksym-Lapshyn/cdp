@@ -1,5 +1,4 @@
 ﻿using Core.Entities;
-using DAL.Context;
 using DAL.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,13 +6,13 @@ using System.Linq;
 
 namespace DAL.Repositories.Implementations
 {
-	public class EfRepository<TEntity> : IRepository<TEntity> where TEntity: BaseEntity
+    public class EfRepository<TEntity> : IRepository<TEntity> where TEntity: BaseEntity
 	{
 		private readonly DbContext _context;
 
-		public EfRepository()
+		public EfRepository(DbContext context)
 		{
-			_context = new EfContext();
+            _context = context;
 		}
 
 		public TEntity Create(TEntity entity)

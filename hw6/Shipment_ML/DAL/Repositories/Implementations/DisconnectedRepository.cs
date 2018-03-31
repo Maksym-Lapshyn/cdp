@@ -10,7 +10,7 @@ using System.Data;
 
 namespace DAL.Repositories.Implementations
 {
-    public class DisconnectedRepository<TEntity> : IDisconnectedRepository<TEntity> where TEntity : BaseEntity
+    public class DisconnectedRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 	{
 		private readonly DisconnectedContext _context;
         private readonly string _tableName;
@@ -27,12 +27,14 @@ namespace DAL.Repositories.Implementations
 			_expressionProvider = new SqlExpressionProvider();
 		}
 
-		public void Create(TEntity entity)
+		public TEntity Create(TEntity entity)
 		{
             var row = _table.NewRow();
             row = _dataMapper.MapToDataRow(entity, row);
 
             _table.Rows.Add(row);
+
+            return entity;
 		}
 
 		public TEntity ReadOne(int id)

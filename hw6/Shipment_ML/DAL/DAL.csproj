@@ -55,8 +55,6 @@
   <ItemGroup>
     <Compile Include="Context\DisconnectedContext.cs" />
     <Compile Include="Context\EfContext.cs" />
-    <Compile Include="Context\Route.cs" />
-    <Compile Include="Context\Warehouse.cs" />
     <Compile Include="Mappers\Implementations\DataMapper.cs" />
     <Compile Include="Mappers\Interfaces\IDataMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,14 +62,16 @@
     <Compile Include="Repositories\Implementations\DapperRepository.cs" />
     <Compile Include="Repositories\Implementations\DisconnectedRepository.cs" />
     <Compile Include="Repositories\Implementations\EfRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IDisconnectedRepository.cs" />
     <Compile Include="Repositories\Interfaces\IRepository.cs" />
     <Compile Include="SqlExpressionProviders\Implementations\SqlExpressionProvider.cs" />
     <Compile Include="SqlExpressionProviders\Interfaces\ISqlExpressionProvider.cs" />
+    <Compile Include="UnitOfWork\Implementation\DapperUnitOfWork.cs" />
+    <Compile Include="UnitOfWork\Implementation\EfUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Interfaces\IDisconnectedUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Implementation\UnitOfWork.cs" />
     <Compile Include="UnitOfWork\Implementation\DisconnectedUnitOfWork.cs" />
-    <Compile Include="UnitOfWork\Interfaces\IUnitOfWork.cs" />
+    <Compile Include="UnitOfWork\Interfaces\ITransactionalUnitOfWork.cs" />
+    <Compile Include="UnitOfWork\Interfaces\IRepositoryFacade.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">
