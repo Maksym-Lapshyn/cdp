@@ -8,7 +8,7 @@ using System.Data.Entity;
 
 namespace DAL.UnitOfWork.Implementation
 {
-    public class EfUnitOfWork : IRepositoryFacade, IDisconnectedUnitOfWork, IDisposable
+    public class EfUnitOfWork : IRepositoryWrapper, IDisconnectedUnitOfWork, IDisposable
     {
         private readonly DbContext _context;
         private readonly Lazy<IRepository<Route>> _lazyRouteRepository;

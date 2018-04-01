@@ -6,7 +6,7 @@ using System;
 
 namespace DAL.UnitOfWork.Implementation
 {
-    public class DisconnectedUnitOfWork : IRepositoryFacade, IDisconnectedUnitOfWork
+    public class DisconnectedUnitOfWork : IRepositoryWrapper, IDisconnectedUnitOfWork
 	{
 		private readonly Context.DisconnectedContext _context;
 		private readonly Lazy<IRepository<Route>> _lazyRouteRepository;

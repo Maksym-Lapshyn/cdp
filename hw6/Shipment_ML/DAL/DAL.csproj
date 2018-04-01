@@ -71,7 +71,7 @@
     <Compile Include="UnitOfWork\Implementation\UnitOfWork.cs" />
     <Compile Include="UnitOfWork\Implementation\DisconnectedUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Interfaces\ITransactionalUnitOfWork.cs" />
-    <Compile Include="UnitOfWork\Interfaces\IRepositoryFacade.cs" />
+    <Compile Include="UnitOfWork\Interfaces\IRepositoryWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj">

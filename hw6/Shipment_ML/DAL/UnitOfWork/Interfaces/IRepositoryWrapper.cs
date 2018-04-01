@@ -3,7 +3,7 @@ using DAL.Repositories.Interfaces;
 
 namespace DAL.UnitOfWork.Interfaces
 {
-    public interface IRepositoryFacade
+    public interface IRepositoryWrapper
 	{
 		IRepository<Route> RouteRepository { get; }
 

@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace DAL.UnitOfWork.Implementation
 {
-    public class DapperUnitOfWork : IRepositoryFacade, ITransactionalUnitOfWork
+    public class DapperUnitOfWork : IRepositoryWrapper, ITransactionalUnitOfWork
     {
         private readonly SqlConnection _connection;
         private readonly Lazy<IRepository<Route>> _lazyRouteRepository;
