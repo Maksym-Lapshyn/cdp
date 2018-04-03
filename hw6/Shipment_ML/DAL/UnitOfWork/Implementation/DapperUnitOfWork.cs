@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace DAL.UnitOfWork.Implementation
 {
-    public class DapperUnitOfWork : IRepositoryWrapper, ITransactionalUnitOfWork
+    public class DapperUnitOfWork : IRepositoryWrapper, ITransactionalUnitOfWork, IDisposable
     {
         private readonly SqlConnection _connection;
         private readonly Lazy<IRepository<Route>> _lazyRouteRepository;
@@ -37,6 +37,12 @@ namespace DAL.UnitOfWork.Implementation
         {
             _transaction.Commit();
             _connection.Close();
+        }
+
+        public void Dispose()
+        {
+            _transaction?.Dispose();
+            _connection.Dispose();
         }
 
         public void RollbackTransaction()

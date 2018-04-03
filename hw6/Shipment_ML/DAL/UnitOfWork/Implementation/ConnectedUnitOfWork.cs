@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace DAL.UnitOfWork.Implementation
 {
-	public class UnitOfWork : IRepositoryWrapper, ITransactionalUnitOfWork
+	public class ConnectedUnitOfWork : IRepositoryWrapper, ITransactionalUnitOfWork, IDisposable
 	{
 		private readonly SqlConnection _connection;
 		private readonly Lazy<IRepository<Route>> _lazyRouteRepository;
@@ -16,7 +16,7 @@ namespace DAL.UnitOfWork.Implementation
 
 		private SqlTransaction _transaction;
 
-		public UnitOfWork()
+		public ConnectedUnitOfWork()
 		{
 			var connectionString = "Data Source=.;Integrated Security=True;Initial Catalog=Shipment_ML;";
 			_connection = new SqlConnection(connectionString);
@@ -44,5 +44,11 @@ namespace DAL.UnitOfWork.Implementation
 			_transaction.Rollback();
 			_connection.Close();
 		}
+
+        public void Dispose()
+        {
+            _transaction?.Dispose();
+            _connection.Dispose();
+        }
 	}
 }

@@ -45,7 +45,7 @@ namespace Tests.DAL
 		[Fact]
 		public void Uow_CreatesAndReadsRoutesAndWarehouses()
 		{
-			var firstUow = new UnitOfWork();
+			var firstUow = new ConnectedUnitOfWork();
 
 			var origin = new Warehouse
 			{
@@ -72,7 +72,7 @@ namespace Tests.DAL
 			};
 
 			route = firstUow.RouteRepository.Create(route);
-			var secondUow = new UnitOfWork();
+			var secondUow = new ConnectedUnitOfWork();
 
 			secondUow.BeginTransaction(IsolationLevel.ReadUncommitted);
 

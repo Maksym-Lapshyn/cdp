@@ -1,0 +1,46 @@
+___________________________________________________________
+03.04.2018 12:58:08 ->> Start Repositories Write Test
+Connected Repository 0 Run ->> Write Speed = 2,11 ms
+Disconnected Repository 0 Run ->> Write Speed = 0,05 ms
+Dapper Repository 0 Run ->> Write Speed = 3,53 ms
+Ef Repository 0 Run ->> Write Speed = 34,85 ms
+Connected Repository 1 Run ->> Write Speed = 0,9 ms
+Disconnected Repository 1 Run ->> Write Speed = 0 ms
+Dapper Repository 1 Run ->> Write Speed = 1,12 ms
+Ef Repository 1 Run ->> Write Speed = 0,01 ms
+Connected Repository 2 Run ->> Write Speed = 0,84 ms
+Disconnected Repository 2 Run ->> Write Speed = 0 ms
+Dapper Repository 2 Run ->> Write Speed = 1,14 ms
+Ef Repository 2 Run ->> Write Speed = 0 ms
+Connected Repository Average ->> Write Speed = 0,0385 ms
+Disconnected Repository Average ->> Write Speed = 0,0005 ms
+Dapper Repository Average ->> Write Speed = 0,0579 ms
+Ef Repository Average ->> Write Speed = 0,3486 ms
+03.04.2018 12:58:13 ->> End Repositories Write Test
+___________________________________________________________
+___________________________________________________________
+03.04.2018 13:17:23 ->> Start Repositories Read Test
+Connected Repository 0 Run ->> Read Speed = 0,391 ms
+___________________________________________________________
+03.04.2018 13:17:58 ->> Start Repositories Read Test
+Connected Repository 0 Run ->> Read Speed = 0,371 ms
+___________________________________________________________
+03.04.2018 13:19:16 ->> Start Repositories Read Test
+Connected Repository 0 Run ->> Read Speed = 0,481 ms
+Disconnected Repository 0 Run ->> Read Speed = 0,079 ms
+Dapper Repository 0 Run ->> Read Speed = 0,591 ms
+Ef Repository 0 Run ->> Read Speed = 5,679 ms
+Connected Repository 1 Run ->> Read Speed = 0,316 ms
+Disconnected Repository 1 Run ->> Read Speed = 0,036 ms
+Dapper Repository 1 Run ->> Read Speed = 0,309 ms
+Ef Repository 1 Run ->> Read Speed = 1,054 ms
+Connected Repository 2 Run ->> Read Speed = 0,313 ms
+Disconnected Repository 2 Run ->> Read Speed = 0,034 ms
+Dapper Repository 2 Run ->> Read Speed = 0,316 ms
+Ef Repository 2 Run ->> Read Speed = 1,08 ms
+Connected Repository Average ->> Read Speed = 0,00111 ms
+Disconnected Repository Average ->> Read Speed = 0,000149 ms
+Dapper Repository Average ->> Read Speed = 0,001216 ms
+Ef Repository Average ->> Read Speed = 0,007813 ms
+03.04.2018 13:19:28 ->> End Repositories Read Test
+___________________________________________________________

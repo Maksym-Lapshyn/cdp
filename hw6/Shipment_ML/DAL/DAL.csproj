@@ -68,7 +68,7 @@
     <Compile Include="UnitOfWork\Implementation\DapperUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Implementation\EfUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Interfaces\IDisconnectedUnitOfWork.cs" />
-    <Compile Include="UnitOfWork\Implementation\UnitOfWork.cs" />
+    <Compile Include="UnitOfWork\Implementation\ConnectedUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Implementation\DisconnectedUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Interfaces\ITransactionalUnitOfWork.cs" />
     <Compile Include="UnitOfWork\Interfaces\IRepositoryWrapper.cs" />

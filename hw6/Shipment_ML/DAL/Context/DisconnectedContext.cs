@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace DAL.Context
 {
-	public class DisconnectedContext
+	public class DisconnectedContext : IDisposable
 	{
 		private readonly DataSet _dataSet;
 		private readonly SqlDataAdapter _dataAdapter;
@@ -76,5 +76,12 @@ namespace DAL.Context
                 _connection.Close();
             }
 		}
-	}
+
+        public void Dispose()
+        {
+            _connection.Dispose();
+            _dataAdapter.Dispose();
+            _dataSet.Dispose();
+        }
+    }
 }
