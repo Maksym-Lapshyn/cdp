@@ -16,5 +16,8 @@ namespace Core.Entities
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
+
+        [StringLength(100)]
+        public string Address { get; set; }
     }
 }

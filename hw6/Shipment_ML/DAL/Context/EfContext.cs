@@ -4,7 +4,12 @@ using System.Data.Entity;
 namespace DAL.Context
 {
     public class EfContext : DbContext
-	{
+    {
+        public EfContext()
+            : base("name=EfShipmentConnection")
+        {
+        }
+
 		public EfContext(string connectionstring)
 			: base(connectionstring)
 		{

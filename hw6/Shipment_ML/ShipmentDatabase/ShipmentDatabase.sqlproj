@@ -100,5 +100,6 @@
     <None Include="Scripts\MergeShipmentStatuses.sql" />
     <None Include="Scripts\UpdateTruckNames.sql" />
     <None Include="Local.publish.publish.xml" />
+    <None Include="Scripts\RunMigration.sql" />
   </ItemGroup>
 </Project>

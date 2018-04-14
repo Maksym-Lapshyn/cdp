@@ -57,6 +57,15 @@
     <Compile Include="Context\EfContext.cs" />
     <Compile Include="Mappers\Implementations\DataMapper.cs" />
     <Compile Include="Mappers\Interfaces\IDataMapper.cs" />
+    <Compile Include="Migrations\201804141148407_InitialCreate.cs" />
+    <Compile Include="Migrations\201804141148407_InitialCreate.Designer.cs">
+      <DependentUpon>201804141148407_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804141151557_WarehouseUpdate.cs" />
+    <Compile Include="Migrations\201804141151557_WarehouseUpdate.Designer.cs">
+      <DependentUpon>201804141151557_WarehouseUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Implementations\ConnectedRepository.cs" />
     <Compile Include="Repositories\Implementations\DapperRepository.cs" />
@@ -82,6 +91,14 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201804141148407_InitialCreate.resx">
+      <DependentUpon>201804141148407_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804141151557_WarehouseUpdate.resx">
+      <DependentUpon>201804141151557_WarehouseUpdate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

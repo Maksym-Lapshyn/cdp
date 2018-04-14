@@ -10,11 +10,12 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
-:r .\Scripts\ImportDrivers.sql
-:r .\Scripts\ImportTrucks.sql
-:r .\Scripts\UpdateTruckNames.sql
-:r .\Scripts\ImportDriversTrucks.sql
-:r .\Scripts\ImportWarehouses.sql
-:r .\Scripts\PopulateRoutes.sql
-:r .\Scripts\MergeShipmentStatuses.sql
-:r .\Scripts\PopulateCargoAndShipment.sql
+--:r .\Scripts\ImportDrivers.sql
+--:r .\Scripts\ImportTrucks.sql
+--:r .\Scripts\UpdateTruckNames.sql
+--:r .\Scripts\ImportDriversTrucks.sql
+--:r .\Scripts\ImportWarehouses.sql
+--:r .\Scripts\PopulateRoutes.sql
+--:r .\Scripts\MergeShipmentStatuses.sql
+--:r .\Scripts\PopulateCargoAndShipment.sql
+:r .\Scripts\RunMigration.sql
