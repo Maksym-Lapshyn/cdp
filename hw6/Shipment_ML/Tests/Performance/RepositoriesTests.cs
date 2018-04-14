@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Tests.Performance
 {
-    public class UnitOfWorkTests
+    public class RepositoriesTests
     {
         private const int WriteSampleSize = 100;
         private const int ReadSampleSize = 1000;
@@ -23,7 +23,7 @@ namespace Tests.Performance
         private readonly string _logFilePath;
         private readonly List<Warehouse> _testWarehouses;
 
-        public UnitOfWorkTests()
+        public RepositoriesTests()
         {
             _connectedUnitOfWork = new ConnectedUnitOfWork();
             _disconnectedUnitOfWork = new DisconnectedUnitOfWork();
@@ -34,7 +34,7 @@ namespace Tests.Performance
         }
 
         [Fact]
-        public void Test_RepositoriesWriteMethods()
+        public void LogPerformanceOfWriteMethods()
         {
             WriteToFile("___________________________________________________________", _logFilePath);
             WriteToFile($"{DateTime.Now} ->> Start Repositories Write Test", _logFilePath);
@@ -82,7 +82,7 @@ namespace Tests.Performance
         }
 
         [Fact]
-        public void Test_RepositoriesReadMethods()
+        public void LogPerformanceOfReadMethods()
         {
             WriteToFile("___________________________________________________________", _logFilePath);
             WriteToFile($"{DateTime.Now} ->> Start Repositories Read Test", _logFilePath);

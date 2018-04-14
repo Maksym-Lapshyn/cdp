@@ -70,8 +70,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\UnitOfWorkTests.cs" />
-    <Compile Include="Performance\UnitOfWorkTests.cs" />
+    <Compile Include="DAL\ConnectedRepositoryTests.cs" />
+    <Compile Include="DAL\EfUnitOfWorkTests.cs" />
+    <Compile Include="Performance\RepositoriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

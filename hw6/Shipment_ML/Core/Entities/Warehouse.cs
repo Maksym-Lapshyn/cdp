@@ -13,5 +13,8 @@ namespace Core.Entities
         [Required]
         [StringLength(50)]
         public string State { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

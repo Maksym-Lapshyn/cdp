@@ -5,6 +5,7 @@ using DAL.Repositories.Interfaces;
 using DAL.UnitOfWork.Interfaces;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace DAL.UnitOfWork.Implementation
 {
@@ -36,7 +37,14 @@ namespace DAL.UnitOfWork.Implementation
 
         public void SaveChanges()
         {
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException("The entity you are trying to modify is outdated, try querying it again.");
+            }
         }
 
         public void Dispose()

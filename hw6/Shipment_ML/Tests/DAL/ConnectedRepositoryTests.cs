@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Tests.DAL
 {
-	public class UnitOfWorkTests : IDisposable
+	public class ConnectedRepositoryTests : IDisposable
 	{
 		private const string ConnectionString = "Data Source=.;Integrated Security=True;Initial Catalog=Shipment_ML;";
 		private const string WarehouseTableName = "[dbo].[Warehouse]";
@@ -17,7 +17,7 @@ namespace Tests.DAL
 		private readonly SqlCommand _getWarehouseCountCommand;
 		private readonly SqlCommand _getRouteCountCommand;
 
-		public UnitOfWorkTests()
+		public ConnectedRepositoryTests()
 		{
 			_connection = new SqlConnection(ConnectionString);
 			_getWarehouseCountCommand = GetSqlCommand(WarehouseTableName);
@@ -43,7 +43,7 @@ namespace Tests.DAL
 		}
 
 		[Fact]
-		public void Uow_CreatesAndReadsRoutesAndWarehouses()
+		public void Repository_CreatesAndReadsRoutesAndWarehouses()
 		{
 			var firstUow = new ConnectedUnitOfWork();
 
