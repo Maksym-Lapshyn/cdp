@@ -7,6 +7,9 @@ namespace Tests.DAL
 {
     public class EfUnitOfWorkTests : IDisposable
     {
+        private const string InitialState = "Initial State";
+        private const string InitialCity = "Initial City";
+
         private readonly int _testEntityId;
         private readonly EfUnitOfWork _firstUow;
         private readonly EfUnitOfWork _secondUow;
@@ -18,8 +21,8 @@ namespace Tests.DAL
 
             var testEntity = new Warehouse
             {
-                City = "Initial City",
-                State = "Initial State"
+                City = InitialCity,
+                State = InitialState
             };
 
             testEntity = _firstUow.WarehouseRepository.Create(testEntity);
@@ -33,6 +36,8 @@ namespace Tests.DAL
         {
             _firstUow.WarehouseRepository.Delete(_testEntityId);
             _firstUow.SaveChanges();
+            _firstUow.Dispose();
+            _secondUow.Dispose();
         }
 
         [Fact]
@@ -54,7 +59,7 @@ namespace Tests.DAL
 
             firstEntityCopy = _firstUow.WarehouseRepository.ReadOne(_testEntityId);
 
-            Assert.Equal("Initial State", firstEntityCopy.State);
+            Assert.Equal(InitialState, firstEntityCopy.State);
         }
     }
 }

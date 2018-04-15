@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\ConnectedRepositoryTests.cs" />
+    <Compile Include="DAL\EfResilensyTests.cs" />
     <Compile Include="DAL\EfUnitOfWorkTests.cs" />
     <Compile Include="Performance\RepositoriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -54,7 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\DisconnectedContext.cs" />
+    <Compile Include="DatabaseConfiguration\TestCommandInterceptor.cs" />
+    <Compile Include="DatabaseConfiguration\TestConfiguration.cs" />
     <Compile Include="Context\EfContext.cs" />
+    <Compile Include="DatabaseConfiguration\TestExecutionStrategy.cs" />
+    <Compile Include="DatabaseConfiguration\TestTransientException.cs" />
     <Compile Include="Mappers\Implementations\DataMapper.cs" />
     <Compile Include="Mappers\Interfaces\IDataMapper.cs" />
     <Compile Include="Migrations\201804141148407_InitialCreate.cs" />
