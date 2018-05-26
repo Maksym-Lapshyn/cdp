@@ -20,11 +20,12 @@ namespace DAL.Tests.Repositories
         private const int ValidId = 1;
         private const int InvalidId = 2;
 
-        private readonly Mock<DietAssistantContext> _contextMock;
-        private readonly Mock<DbSet<Dish>> _dbSetMock;
-        private readonly Repository<Dish> _target;
+        private Mock<DietAssistantContext> _contextMock;
+        private Mock<DbSet<Dish>> _dbSetMock;
+        private Repository<Dish> _target;
 
-        public RepositoryTests()
+        [SetUp]
+        public void RepositoryTests1()
         {
             _contextMock = new Mock<DietAssistantContext>();
             _dbSetMock = new Mock<DbSet<Dish>>();
